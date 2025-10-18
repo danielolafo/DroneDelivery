@@ -1,0 +1,20 @@
+package com.drone.delivery.service;
+
+
+
+import com.drone.delivery.dto.DispatchDto;
+import com.drone.delivery.dto.ResponseWrapper;
+import com.drone.delivery.entity.Dispatch;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+public interface DispatchService {
+	
+	public Mono<ResponseWrapper<DispatchDto>> dispatch(DispatchDto dispatchDto);
+	
+	public Flux<DispatchDto> getDispatchHistory(Integer customerId);
+	
+	public Flux<Dispatch> getDispatchHistoryPlain(Integer customerId);
+
+}
