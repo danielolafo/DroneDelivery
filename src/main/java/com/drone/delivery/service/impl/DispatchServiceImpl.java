@@ -38,15 +38,17 @@ public class DispatchServiceImpl implements DispatchService {
 	@Override
 	public Flux<DispatchDto> getDispatchHistory(Integer customerId) {
 		log.info("getDispatchHistory - : customerId "+customerId);
-		Flux<DispatchDto> dispatchDtos = this.repository.findByCustomer_Id(customerId)
+		Flux<DispatchDto> dispatchDtos = this.repository.findAll()
 				.map(dis -> DispatchDto.builder().build());
-		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
-		dispatchDtos.map(dis -> {
-			dis.setLstDispatchCartDto(dispatchCartDtos.collectList().block().stream()
-					.filter(dc -> dc.getDispatchId().equals(dis.getId())).collect(Collectors.toList()));
-			return dis;
-		});
-		return null;
+		return this.repository.findAll()
+				.map(dis -> DispatchDto.builder().build());
+		//Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
+//		return dispatchDtos.map(dis -> {
+//			dis.setLstDispatchCartDto(dispatchCartDtos.collectList().block().stream()
+//					.filter(dc -> dc.getDispatchId().equals(dis.getId())).collect(Collectors.toList()));
+//			return dis;
+//		});
+		//return null;
 		
 		
 		/*
@@ -67,7 +69,7 @@ public class DispatchServiceImpl implements DispatchService {
 	@Override
 	public Flux<Dispatch> getDispatchHistoryPlain(Integer customerId) {
 		// TODO Auto-generated method stub
-		return this.repository.findByCustomer_Id(customerId);
+		return this.repository.findAll();
 		//return null;
 	}
 	
