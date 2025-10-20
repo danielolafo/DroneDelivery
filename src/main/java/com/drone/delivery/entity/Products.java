@@ -1,18 +1,14 @@
 package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -20,14 +16,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name="dronedeliv.DISPATCHES")
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Dispatch {
+@Entity
+@Table(name="products")
+public class Products {
 	
 	@Id
     @Column(nullable = false, updatable = false)
@@ -43,39 +38,22 @@ public class Dispatch {
     )
     private Integer id;
 
-    @Column(length = 100)
-    private String origin;
-
-    @Column(length = 100)
-    private String target;
-
-    @Column(precision = 20, scale = 2)
-    private BigDecimal paymentValue;
-
-    @Column(nullable = false)
-    private Integer paymentMethod;
-
-    @Column(nullable = false)
-    private LocalDate startDate;
-
-    @Column
-    private LocalDate endDate;
+    @Column(length = 50)
+    private String name;
 
     @Column(precision = 3, scale = 2)
-    private BigDecimal kmDone;
+    private BigDecimal quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @Column(precision = 20, scale = 2)
+    private BigDecimal unitPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drone_id", nullable = false)
-    private Drone drone;
+    @Column(precision = 3, scale = 2)
+    private BigDecimal stockQuantity;
 
-    @OneToMany(mappedBy = "dispatch")
-    private Set<DispatchCart> dispatchDispatchCarts = new HashSet<>();
+    @Column(length = 100)
+    private String brand;
 
-    @OneToMany(mappedBy = "dispatch")
-    private Set<DispatchComment> dispatchDispatchComments = new HashSet<>();
+    @OneToMany(mappedBy = "product")
+    private Set<DispatchCart> productDispatchCarts = new HashSet<>();
 
 }

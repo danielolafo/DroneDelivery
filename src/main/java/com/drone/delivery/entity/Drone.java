@@ -56,6 +56,6 @@ public class Drone {
     private Set<DroneMaintenance> droneDroneMaintenances = new HashSet<>();
 
     @OneToMany(mappedBy = "drone")
-    private Set<Dispatch> droneDispatches = new HashSet<>();
+    private Set<Dispatches> droneDispatches = new HashSet<>();
 
 }

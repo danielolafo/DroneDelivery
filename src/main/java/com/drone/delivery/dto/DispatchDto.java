@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.drone.delivery.entity.Customer;
-import com.drone.delivery.entity.DispatchComment;
+import com.drone.delivery.entity.DispatchComments;
 import com.drone.delivery.entity.Drone;
 
 import jakarta.persistence.OneToMany;
@@ -56,7 +56,7 @@ public class DispatchDto {
     
     List<DispatchCartDto> lstDispatchCartDto = new ArrayList<>();
  
-    @OneToMany(mappedBy = "dispatch")
-    private Set<DispatchComment> dispatchDispatchComments = new HashSet<>();
+    
+    private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();
 
 }

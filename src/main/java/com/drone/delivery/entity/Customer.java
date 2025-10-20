@@ -36,6 +36,6 @@ public class Customer {
     private List<CustomerLocation> customerCustomerLocations = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
-    private List<Dispatch> customerDispatches = new ArrayList<>();
+    private List<Dispatches> customerDispatches = new ArrayList<>();
 	
 }

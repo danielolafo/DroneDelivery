@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.drone.delivery.dto.DispatchCartDto;
 import com.drone.delivery.dto.DispatchDto;
 import com.drone.delivery.dto.ResponseWrapper;
-import com.drone.delivery.entity.Dispatch;
+import com.drone.delivery.entity.Dispatches;
 import com.drone.delivery.repository.DispatchRepository;
 import com.drone.delivery.service.DispatchCartService;
 import com.drone.delivery.service.DispatchService;
@@ -39,15 +39,27 @@ public class DispatchServiceImpl implements DispatchService {
 	public Flux<DispatchDto> getDispatchHistory(Integer customerId) {
 		log.info("getDispatchHistory - : customerId "+customerId);
 		Flux<DispatchDto> dispatchDtos = this.repository.findAll()
-				.map(dis -> DispatchDto.builder().build());
-		return this.repository.findAll()
-				.map(dis -> DispatchDto.builder().build());
-		//Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
-//		return dispatchDtos.map(dis -> {
-//			dis.setLstDispatchCartDto(dispatchCartDtos.collectList().block().stream()
-//					.filter(dc -> dc.getDispatchId().equals(dis.getId())).collect(Collectors.toList()));
-//			return dis;
-//		});
+				.map(dis -> DispatchDto.builder()
+						.droneId(null)
+						.id(dis.getId())
+						.startDate(dis.getStartDate())
+						.endDate(dis.getEndDate())
+						.build()
+						);
+//		return this.repository.findAll()
+//				.map(dis -> DispatchDto.builder()
+//						.droneId(null)
+//						.id(dis.getId())
+//						.startDate(dis.getStartDate())
+//						.endDate(dis.getEndDate())
+//						.build()
+//						);
+		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
+		return dispatchDtos.map(dis -> {
+			dis.setLstDispatchCartDto(dispatchCartDtos.collectList().block().stream()
+					.filter(dc -> dc.getDispatchId().equals(dis.getId())).collect(Collectors.toList()));
+			return dis;
+		});
 		//return null;
 		
 		
@@ -67,7 +79,7 @@ public class DispatchServiceImpl implements DispatchService {
 	}
 
 	@Override
-	public Flux<Dispatch> getDispatchHistoryPlain(Integer customerId) {
+	public Flux<Dispatches> getDispatchHistoryPlain(Integer customerId) {
 		// TODO Auto-generated method stub
 		return this.repository.findAll();
 		//return null;

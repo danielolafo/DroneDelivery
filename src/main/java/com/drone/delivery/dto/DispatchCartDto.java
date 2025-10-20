@@ -2,7 +2,7 @@ package com.drone.delivery.dto;
 
 import java.math.BigDecimal;
 
-import com.drone.delivery.entity.Product;
+import com.drone.delivery.entity.Products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class DispatchCartDto {
 
     private BigDecimal cost;
 
-    private Product product;
+    private Products product;
 
     private Integer dispatchId;
 	

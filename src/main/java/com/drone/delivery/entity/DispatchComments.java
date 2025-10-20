@@ -1,17 +1,17 @@
 package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 
-public class Product {
+public class DispatchComments {
 	
 	@Id
     @Column(nullable = false, updatable = false)
@@ -27,22 +27,14 @@ public class Product {
     )
     private Integer id;
 
-    @Column(length = 50)
-    private String name;
+    @Column(nullable = false, length = 250)
+    private String dispatchComment;
 
     @Column(precision = 3, scale = 2)
-    private BigDecimal quantity;
+    private BigDecimal dispatchRating;
 
-    @Column(precision = 20, scale = 2)
-    private BigDecimal unitPrice;
-
-    @Column(precision = 3, scale = 2)
-    private BigDecimal stockQuantity;
-
-    @Column(length = 100)
-    private String brand;
-
-    @OneToMany(mappedBy = "product")
-    private Set<DispatchCart> productDispatchCarts = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dispatch_id", nullable = false)
+    private Dispatches dispatch;
 
 }

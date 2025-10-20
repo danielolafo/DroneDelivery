@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.drone.delivery.dto.DispatchDto;
-import com.drone.delivery.entity.Dispatch;
+import com.drone.delivery.entity.Dispatches;
 import com.drone.delivery.service.DispatchService;
 
 import reactor.core.publisher.Flux;
@@ -27,7 +27,7 @@ public class DispatchController {
 	}
 	
 	@GetMapping("/history-plain/{customerId}")
-	public Flux<Dispatch> getDispatchHistoryPlain(@PathVariable("customerId") Integer customerId){
+	public Flux<Dispatches> getDispatchHistoryPlain(@PathVariable("customerId") Integer customerId){
 		return this.dispatchService.getDispatchHistoryPlain(customerId);
 	}
 

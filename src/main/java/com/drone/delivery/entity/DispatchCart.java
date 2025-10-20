@@ -41,10 +41,10 @@ public class DispatchCart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private Products product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dispatch_id", nullable = false)
-    private Dispatch dispatch;
+    private Dispatches dispatch;
 
 }
