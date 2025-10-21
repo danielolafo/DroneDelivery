@@ -1,8 +1,11 @@
 package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +13,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name="dispatch_cart")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class DispatchCart {
 	
 	@Id
@@ -39,12 +53,12 @@ public class DispatchCart {
     @Column(precision = 20, scale = 2)
     private BigDecimal cost;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Products product;
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Products productId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dispatch_id", nullable = false)
-    private Dispatches dispatch;
+    private Dispatches dispatchId;
 
 }

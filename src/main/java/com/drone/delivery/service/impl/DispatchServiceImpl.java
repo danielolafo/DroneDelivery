@@ -1,6 +1,6 @@
 package com.drone.delivery.service.impl;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -46,36 +46,32 @@ public class DispatchServiceImpl implements DispatchService {
 						.endDate(dis.getEndDate())
 						.build()
 						);
-//		return this.repository.findAll()
-//				.map(dis -> DispatchDto.builder()
-//						.droneId(null)
-//						.id(dis.getId())
-//						.startDate(dis.getStartDate())
-//						.endDate(dis.getEndDate())
-//						.build()
-//						);
+
 		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
-		return dispatchDtos.map(dis -> {
-			dis.setLstDispatchCartDto(dispatchCartDtos.collectList().block().stream()
-					.filter(dc -> dc.getDispatchId().equals(dis.getId())).collect(Collectors.toList()));
-			return dis;
-		});
-		//return null;
+//		return dispatchDtos.flatMap(dispatchDto ->
+//			dispatchCartDtos.filter(dispatchCartDto -> 
+//			dispatchCartDto.getDispatchId().equals(dispatchDto.getId()))
+//			.map(dispatchCartDto -> DispatchDto.builder()
+//					.droneId(dispatchDto.getId())
+//					.lstDispatchCartDto(List.of(dispatchCartDto))
+//					.droneId(666)
+//					.build())
+//		).onErrorResume(IllegalArgumentException.class, e -> {
+//            System.err.println("Handling error: " + e.getMessage());
+//            return Flux.just(DispatchDto.builder().id(-111).build());
+//        });
 		
-		
-		/*
-		 * 
-		log.info("getDispatchHistory - : customerId "+customerId);
-		Flux<DispatchDto> dispatchDtos = this.repository.findByCustomer_Id(customerId)
-				.map(dis -> DispatchDto.builder().build());
-		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
-		return dispatchDtos.map(dis -> {
-			dis.setLstDispatchCartDto(dispatchCartDtos.collectList().block().stream()
-					.filter(dc -> dc.getDispatchId().equals(dis.getId())).collect(Collectors.toList()));
-			return dis;
-		});
-		return null;
-		 */
+	
+		return dispatchDtos.map(dis -> 
+			dispatchCartDtos.filter(dispatchCartDto -> 
+			dispatchCartDto.getDispatchId().equals(dis.getId()))
+			.map(dispatchCartDto -> DispatchDto.builder()
+					.droneId(dis.getId())
+					//.lstDispatchCartDto(List.of(dispatchCartDto))
+					.droneId(666)
+					.build()
+			)
+		);
 	}
 
 	@Override

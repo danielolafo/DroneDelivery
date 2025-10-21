@@ -19,7 +19,7 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 
 	@Override
 	public Flux<DispatchCartDto> getDispatchContent(Integer dispatchId) {
-		return this.repository.findByDispatch_Id(dispatchId)
+		return this.repository.findByDispatchId_Id(dispatchId)
 		.map(dis -> {
 			DispatchCartDto dispatchCartDto = new  DispatchCartDto();
 			dispatchCartDto.setId(dispatchId);
