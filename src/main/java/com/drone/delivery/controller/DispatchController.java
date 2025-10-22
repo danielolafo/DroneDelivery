@@ -2,14 +2,18 @@ package com.drone.delivery.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.drone.delivery.dto.CartHistory;
 import com.drone.delivery.dto.DispatchDto;
-import com.drone.delivery.entity.Dispatches;
+import com.drone.delivery.dto.ResponseWrapper;
 import com.drone.delivery.service.DispatchService;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/dispatch")
@@ -26,9 +30,14 @@ public class DispatchController {
 		return this.dispatchService.getDispatchHistory(customerId);
 	}
 	
-	@GetMapping("/history-plain/{customerId}")
-	public Flux<Dispatches> getDispatchHistoryPlain(@PathVariable("customerId") Integer customerId){
-		return this.dispatchService.getDispatchHistoryPlain(customerId);
+	@GetMapping("/cart/{customerId}")
+	public Flux<CartHistory> getDispatchHistoryPlain(@PathVariable("customerId") Integer customerId){
+		return this.dispatchService.getHistory(customerId);
+	}
+	
+	@PostMapping
+	public Mono<ResponseWrapper<DispatchDto>> create(@RequestBody DispatchDto dispatchDto){
+		return this.dispatchService.create(dispatchDto);
 	}
 
 }

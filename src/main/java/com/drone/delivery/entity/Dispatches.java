@@ -2,8 +2,8 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -73,9 +73,9 @@ public class Dispatches {
     private Drone drone;
 
     @OneToMany(mappedBy = "dispatches")
-    private Set<DispatchCart> dispatchDispatchCarts = new HashSet<>();
+    private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
 
     @OneToMany(mappedBy = "dispatches")
-    private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();
+    private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
 
 }

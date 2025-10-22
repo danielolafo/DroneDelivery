@@ -25,7 +25,7 @@ public class DispatchCartDto {
 
     private BigDecimal cost;
 
-    private Products product;
+    private Integer product;
 
     private Integer dispatchId;
 	

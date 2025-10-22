@@ -1,6 +1,6 @@
 package com.drone.delivery.service.impl;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
@@ -9,6 +9,7 @@ import com.drone.delivery.dto.DispatchCartDto;
 import com.drone.delivery.dto.DispatchDto;
 import com.drone.delivery.dto.ResponseWrapper;
 import com.drone.delivery.entity.Dispatches;
+import com.drone.delivery.mapper.DispatchMapper;
 import com.drone.delivery.repository.DispatchRepository;
 import com.drone.delivery.service.DispatchCartService;
 import com.drone.delivery.service.DispatchService;
@@ -79,6 +80,78 @@ public class DispatchServiceImpl implements DispatchService {
 		// TODO Auto-generated method stub
 		return this.repository.findAll();
 		//return null;
+	}
+
+	@Override
+	public Flux<CartHistory> getHistory(Integer customerId) {
+		log.info("getDispatchHistory - : customerId "+customerId);
+		Flux<DispatchDto> dispatchDtos = this.repository.findAll()
+				.map(dis -> DispatchDto.builder()
+						.droneId(null)
+						.id(dis.getId())
+						.startDate(dis.getStartDate())
+						.endDate(dis.getEndDate())
+						.build()
+						);
+
+		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
+		
+		dispatchCartDtos.subscribe(
+				c -> System.out.println("ABCD"),
+				error -> System.out.println("ABCD ERROR "+error.getLocalizedMessage())
+		);
+		
+		return dispatchDtos.flatMap(dispatchDto ->
+			dispatchCartDtos.filter(dispatchCartDto -> 
+			dispatchCartDto.getDispatchId().equals(dispatchDto.getId()))
+			.map(dispatchCartDto -> CartHistory.builder()
+					.dispatchCartDto(dispatchCartDto)
+					.dispatchDto(dispatchDto)
+					.build())
+		).onErrorResume(IllegalArgumentException.class, e -> {
+           System.err.println("Handling error: " + e.getMessage());
+           return Flux.just(CartHistory.builder().build());
+        });
+
+	
+	}
+
+	@Override
+	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto) {
+		
+		Dispatches dispatches = Dispatches.builder()
+				.customer(null)
+				.drone(dispatchDto.getDrone())
+				.startDate(dispatchDto.getStartDate())
+				.endDate(dispatchDto.getEndDate())
+				.kmDone(dispatchDto.getKmDone())
+				.paymentValue(dispatchDto.getPaymentValue())
+				.origin(dispatchDto.getOrigin())
+				.target(dispatchDto.getTarget())
+				.dispatchDispatchCarts(new ArrayList<>())
+				.dispatchDispatchComments(new ArrayList<>())
+				.build();
+		
+		/*
+		return this.repository
+				//.save(DispatchMapper.INSTANCE.toEntity(dispatchDto))
+				.save(dispatches)
+				.map(dis -> {
+					dispatchDto.setId(dis.getId());
+					return ResponseWrapper.<DispatchDto>builder()
+							.data(dispatchDto)
+							.build();
+				});
+				*/
+		this.repository.save(dispatches).subscribe();
+		this.repository
+				//.save(DispatchMapper.INSTANCE.toEntity(dispatchDto))
+				.save(dispatches)
+				.map(dis -> ResponseWrapper.<DispatchDto>builder()
+							.data(dispatchDto)
+							.build()
+				).onErrorContinue((err,  el)-> System.out.print("Err "+err.getLocalizedMessage()));
+		return null;
 	}
 	
 

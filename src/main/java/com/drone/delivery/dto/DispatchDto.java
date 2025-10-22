@@ -57,6 +57,6 @@ public class DispatchDto {
     List<DispatchCartDto> lstDispatchCartDto = new ArrayList<>();
  
     
-    private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();
+    //private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();
 
 }
