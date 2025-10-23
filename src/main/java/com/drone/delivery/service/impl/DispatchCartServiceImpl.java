@@ -23,10 +23,11 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 	public Flux<DispatchCartDto> getDispatchContent(Integer dispatchId) {
 		return this.repository.findByDispatchId(dispatchId)
 		.map(dis -> {
-			System.out.println("DISPATCHCARTSERVICEIMPL");
+			System.out.println("dispatch_cart_serviceimpl "+dis.getDispatchId());
 			DispatchCartDto dispatchCartDto = new  DispatchCartDto();
 			dispatchCartDto.setId(dispatchId);
 			dispatchCartDto.setProduct(dis.getProductId());
+			dispatchCartDto.setDispatchId(dis.getDispatchId());
 			return dispatchCartDto;
 		}).onErrorContinue((el, err )-> System.out.println("ERROR "+el.getLocalizedMessage()));
 	}

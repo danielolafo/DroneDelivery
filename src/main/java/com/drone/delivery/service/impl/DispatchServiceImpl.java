@@ -56,7 +56,10 @@ public class DispatchServiceImpl implements DispatchService {
 				.build());
 		
 		return this.repository.findAll().flatMap(dis ->
-			dispatchCartDtos.collectList()
+			dispatchCartDtos
+			.filter(dc -> Objects.nonNull(dc.getDispatchId()) 
+					&& dc.getDispatchId().equals(dis.getId()))
+			.collectList()
 			.map(cart -> DispatchDto.builder()
 					.id(dis.getId())
 					.lstDispatchCartDto(cart).build())
