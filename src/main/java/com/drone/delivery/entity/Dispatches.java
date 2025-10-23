@@ -2,6 +2,7 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,14 +29,14 @@ public class Dispatches {
 	@Id
     @Column(nullable = false, updatable = false)
     @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
+            name = "dispatches_seq1",
+            sequenceName = "dispatches_seq1",
             allocationSize = 1,
             initialValue = 10000
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
+            generator = "dispatches_seq1"
     )
     private Integer id;
 
@@ -50,9 +53,11 @@ public class Dispatches {
     private Integer paymentMethod;
 
     @Column(nullable = false)
+    
     private LocalDate startDate;
 
     @Column
+    
     private LocalDate endDate;
 
     @Column(precision = 3, scale = 2)

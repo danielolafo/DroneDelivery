@@ -7,9 +7,11 @@ import com.drone.delivery.mapper.DispatchCartMapper;
 import com.drone.delivery.repository.DispatchCartRepository;
 import com.drone.delivery.service.DispatchCartService;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Service
 public class DispatchCartServiceImpl implements DispatchCartService {
 	
@@ -31,9 +33,11 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 
 	@Override
 	public Mono<DispatchCartDto> create(DispatchCartDto dispatchCartDto) {
+		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCartDto);
 		return this.repository
 				.save(DispatchCartMapper.INSTANCE.toEntity(dispatchCartDto))
 				.map(dis -> {
+					log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCartDto);
 					dispatchCartDto.setId(dis.getId());
 					return dispatchCartDto;
 				});

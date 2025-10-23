@@ -3,15 +3,11 @@ package com.drone.delivery.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import com.drone.delivery.entity.Customer;
-import com.drone.delivery.entity.DispatchComments;
 import com.drone.delivery.entity.Drone;
 
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,7 +42,7 @@ public class DispatchDto {
     
     private BigDecimal kmDone;
 
-    private Customer customer;
+    private Integer customerId;
 
   
     private Drone drone;

@@ -117,41 +117,16 @@ public class DispatchServiceImpl implements DispatchService {
 
 	@Override
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto) {
+		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
 		
-		Dispatches dispatches = Dispatches.builder()
-				.id(dispatchDto.getId())
-				.customerId(1)
-				.droneId(1)
-				.startDate(dispatchDto.getStartDate())
-				.endDate(dispatchDto.getEndDate())
-				.kmDone(dispatchDto.getKmDone())
-				.paymentValue(dispatchDto.getPaymentValue())
-				.paymentMethod(1)
-				.origin(dispatchDto.getOrigin())
-				.target(dispatchDto.getTarget())
-				//.dispatchDispatchCarts(new ArrayList<>())
-				//.dispatchDispatchComments(new ArrayList<>())
-				.build();
+		Mono<Dispatches> dispatchesMono = this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate());
+		dispatchesMono.hasElement().map(u -> Mono.error(new Exception("Only can send one delivery at day")));
+		Dispatches dispatches = DispatchMapper.INSTANCE.toEntity(dispatchDto);
+		dispatchesMono.subscribe(m ->System.out.println("Found "+m.getId()));
 		
-		/*
-		return this.repository
-				//.save(DispatchMapper.INSTANCE.toEntity(dispatchDto))
-				.save(dispatches)
-				.map(dis -> {
-					dispatchDto.setId(dis.getId());
-					return ResponseWrapper.<DispatchDto>builder()
-							.data(dispatchDto)
-							.build();
-				});
-				*/
-		this.repository.save(dispatches).subscribe();
-		this.repository
-				//.save(DispatchMapper.INSTANCE.toEntity(dispatchDto))
-				.save(dispatches)
-				.map(dis -> ResponseWrapper.<DispatchDto>builder()
-							.data(dispatchDto)
-							.build()
-				).onErrorContinue((err,  el)-> System.out.print("Err "+err.getLocalizedMessage()));
+		this.repository.save(dispatches).subscribe(
+				d -> dispatchDto.setId(dispatches.getId())
+		);		
 		return null;
 	}
 	
