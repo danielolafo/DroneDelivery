@@ -2,18 +2,12 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -63,19 +57,25 @@ public class Dispatches {
 
     @Column(precision = 3, scale = 2)
     private BigDecimal kmDone;
+    
+    @Column(name="customer_id")
+    private Integer customerId;
+    
+    @Column(name="drone_id")
+    private Integer droneId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drone_id", nullable = false)
-    private Drone drone;
-
-    @OneToMany(mappedBy = "dispatches")
-    private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "dispatches")
-    private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "customer_id", nullable = false)
+//    private Customer customer;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "drone_id", nullable = false)
+//    private Drone drone;
+//
+//    @OneToMany(mappedBy = "dispatches")
+//    private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "dispatches")
+//    private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
 
 }

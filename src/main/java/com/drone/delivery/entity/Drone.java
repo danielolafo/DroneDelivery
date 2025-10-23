@@ -9,9 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,10 +52,12 @@ public class Drone {
     @Column(precision = 3, scale = 2)
     private BigDecimal batteryAutonomy;
 
-    @OneToMany(mappedBy = "drone")
+    //@OneToMany(mappedBy = "drone")
+    @Transient
     private Set<DroneMaintenance> droneDroneMaintenances = new HashSet<>();
 
-    @OneToMany(mappedBy = "drone")
+    //@OneToMany(mappedBy = "drone")
+    @Transient
     private Set<Dispatches> droneDispatches = new HashSet<>();
 
 }

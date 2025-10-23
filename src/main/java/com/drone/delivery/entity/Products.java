@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -53,7 +54,8 @@ public class Products {
     @Column(length = 100)
     private String brand;
 
-    @OneToMany(mappedBy = "product")
+    //@OneToMany(mappedBy = "product")
+    @Transient
     private Set<DispatchCart> productDispatchCarts = new HashSet<>();
 
 }

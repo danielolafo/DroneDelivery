@@ -7,8 +7,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Transient;
 
 public class Customer {
 
@@ -32,10 +32,12 @@ public class Customer {
     @Column(length = 100)
     private String businessType;
 
-    @OneToMany(mappedBy = "customer")
+    //@OneToMany(mappedBy = "customer")
+    @Transient
     private List<CustomerLocation> customerCustomerLocations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer")
+    //@OneToMany(mappedBy = "customer")
+    @Transient
     private List<Dispatches> customerDispatches = new ArrayList<>();
 	
 }

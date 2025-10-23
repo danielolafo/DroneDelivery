@@ -10,6 +10,6 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface DispatchRepository extends R2dbcRepository<Dispatches, Integer> {
 	
-	Flux<Dispatches> findByCustomer_Id(Integer customerId);
+	Flux<Dispatches> findByCustomerId(Integer customerId);
 
 }

@@ -1,7 +1,5 @@
 package com.drone.delivery.service.impl;
 
-import java.util.ArrayList;
-
 import org.springframework.stereotype.Service;
 
 import com.drone.delivery.dto.CartHistory;
@@ -9,7 +7,6 @@ import com.drone.delivery.dto.DispatchCartDto;
 import com.drone.delivery.dto.DispatchDto;
 import com.drone.delivery.dto.ResponseWrapper;
 import com.drone.delivery.entity.Dispatches;
-import com.drone.delivery.mapper.DispatchMapper;
 import com.drone.delivery.repository.DispatchRepository;
 import com.drone.delivery.service.DispatchCartService;
 import com.drone.delivery.service.DispatchService;
@@ -120,16 +117,18 @@ public class DispatchServiceImpl implements DispatchService {
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto) {
 		
 		Dispatches dispatches = Dispatches.builder()
-				.customer(null)
-				.drone(dispatchDto.getDrone())
+				.id(dispatchDto.getId())
+				.customerId(1)
+				.droneId(1)
 				.startDate(dispatchDto.getStartDate())
 				.endDate(dispatchDto.getEndDate())
 				.kmDone(dispatchDto.getKmDone())
 				.paymentValue(dispatchDto.getPaymentValue())
+				.paymentMethod(1)
 				.origin(dispatchDto.getOrigin())
 				.target(dispatchDto.getTarget())
-				.dispatchDispatchCarts(new ArrayList<>())
-				.dispatchDispatchComments(new ArrayList<>())
+				//.dispatchDispatchCarts(new ArrayList<>())
+				//.dispatchDispatchComments(new ArrayList<>())
 				.build();
 		
 		/*
