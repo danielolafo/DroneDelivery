@@ -9,6 +9,7 @@ import com.drone.delivery.dto.DispatchCartDto;
 import com.drone.delivery.dto.DispatchDto;
 import com.drone.delivery.dto.ResponseWrapper;
 import com.drone.delivery.entity.Dispatches;
+import com.drone.delivery.mapper.DispatchMapper;
 import com.drone.delivery.repository.DispatchRepository;
 import com.drone.delivery.service.DispatchCartService;
 import com.drone.delivery.service.DispatchService;
@@ -39,14 +40,6 @@ public class DispatchServiceImpl implements DispatchService {
 	@Override
 	public Flux<DispatchDto> getDispatchHistory(Integer customerId) {
 		log.info("getDispatchHistory - : customerId "+customerId);
-		Flux<DispatchDto> dispatchDtos = this.repository.findAll()
-				.map(dis -> DispatchDto.builder()
-						.droneId(null)
-						.id(dis.getId())
-						.startDate(dis.getStartDate())
-						.endDate(dis.getEndDate())
-						.build()
-						);
 
 		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
 		
@@ -60,9 +53,11 @@ public class DispatchServiceImpl implements DispatchService {
 			.filter(dc -> Objects.nonNull(dc.getDispatchId()) 
 					&& dc.getDispatchId().equals(dis.getId()))
 			.collectList()
-			.map(cart -> DispatchDto.builder()
-					.id(dis.getId())
-					.lstDispatchCartDto(cart).build())
+			.map(cart -> {
+				DispatchDto dto = DispatchMapper.INSTANCE.toDto(dis);
+				dto.setLstDispatchCartDto(cart);
+				return dto;
+			})
 		);
 		
 		/*
