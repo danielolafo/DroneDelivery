@@ -47,29 +47,13 @@ public class DispatchServiceImpl implements DispatchService {
 						);
 
 		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
-		/*
-		return dispatchDtos.flatMap(dispatchDto ->
-			dispatchCartDtos.filter(dispatchCartDto -> 
-			dispatchCartDto.getDispatchId().equals(dispatchDto.getId()))
-			.map(dispatchCartDto -> DispatchDto.builder()
-					.droneId(dispatchDto.getId())
-					.lstDispatchCartDto(List.of(dispatchCartDto))
-					.droneId(666)
-					.build())
-		).onErrorResume(IllegalArgumentException.class, e -> {
-           System.err.println("Handling error: " + e.getMessage());
-           return Flux.just(DispatchDto.builder().id(-111).build());
-        });*/
 		
-		/*return dispatchDtos.map(dis -> 
-		 DispatchDto.builder()
-				.droneId(dis.getId())
-				//.lstDispatchCartDto(List.of(dispatchCartDto))
-				.droneId(666)
-				.build()
-	);*/
+		return this.dispatchCartService.getDispatchContent(customerId)
+		.map(dis -> DispatchDto.builder()
+				.id(dis.getId())
+				.build());
 	
-		return dispatchDtos;
+		//return dispatchDtos;
 	}
 
 	@Override
