@@ -54,7 +54,7 @@ public class DispatchDto {
     private Integer droneId;
 
     
-    List<DispatchCartDto> lstDispatchCartDto = new ArrayList<>();
+    private List<DispatchCartDto> lstDispatchCartDto = new ArrayList<>();
  
     
     //private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();

@@ -1,5 +1,7 @@
 package com.drone.delivery.service.impl;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 
 import com.drone.delivery.dto.CartHistory;
@@ -48,10 +50,28 @@ public class DispatchServiceImpl implements DispatchService {
 
 		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
 		
-		return this.dispatchCartService.getDispatchContent(customerId)
+		this.dispatchCartService.getDispatchContent(customerId)
 		.map(dis -> DispatchDto.builder()
 				.id(dis.getId())
 				.build());
+		
+		return this.repository.findAll().flatMap(dis ->
+			dispatchCartDtos.collectList()
+			.map(cart -> DispatchDto.builder()
+					.id(dis.getId())
+					.lstDispatchCartDto(cart).build())
+		);
+		
+		/*
+		return this.repository.findAll()
+		.map(dis -> DispatchDto.builder()
+				.droneId(null)
+				.id(dis.getId())
+				.startDate(dis.getStartDate())
+				.endDate(dis.getEndDate())
+				.build()
+				);
+		*/
 	
 		//return dispatchDtos;
 	}
