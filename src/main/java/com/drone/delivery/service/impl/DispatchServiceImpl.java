@@ -119,47 +119,52 @@ public class DispatchServiceImpl implements DispatchService {
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
 		
-		Mono<Dispatches> dispatchesMono = this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate());
-		dispatchesMono.hasElement().map(u -> Mono.error(new Exception("Only can send one delivery at day")));
-		Dispatches dispatches = DispatchMapper.INSTANCE.toEntity(dispatchDto);
-		dispatchesMono.subscribe(m ->System.out.println("Found "+m.getId()));
+//		Mono<Dispatches> dispatchesMono = this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate());
+//		dispatchesMono.hasElement().map(u -> Mono.error(new Exception("Only can send one delivery at day")));
+//		Dispatches dispatches = DispatchMapper.INSTANCE.toEntity(dispatchDto);
+//		dispatchesMono.subscribe(m ->System.out.println("Found "+m.getId()));
 		
-		//TEMPORAL
-		this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate())
-		.flatMap(d -> {
-			return Mono.error(new Exception("Only can send one delivery at day"));//Mono.just(d);
-		}).switchIfEmpty(
-				this.repository.save(dispatches).map(d->{
-					dispatchDto.setId(d.getId());
-					return Mono.just(ResponseWrapper.<DispatchDto>builder()
-							.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
-							.build());
-				})
-		).map(d -> Mono.just(ResponseWrapper.<DispatchDto>builder()
-				.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
-				.build()));
 		
-		/*
-		Mono<Object> resp =  this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate())
+		return  this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate())
 		.map(d->{
+			log.info("d.getId() "+d.getId());
 			if(Objects.nonNull(d.getId())) {
-				return Mono.just(ResponseWrapper.<DispatchDto>builder()
-						.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
-						.build());
+				log.error("Only can send onde delivery per day");
+				return ResponseWrapper.<DispatchDto>builder()
+						.data(DispatchDto.builder().build())
+						.message("Only can send onde delivery per day")
+						.build();
 			}else {
-				return Mono.just(ResponseWrapper.<DispatchDto>builder()
-						.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
-						.build());
+				log.info("OK DISPATCH CREATED");
+				this.repository.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).subscribe(
+						saved -> System.out.println("Id "+ saved.getId()),
+						error -> System.err.println("Error "+error.getLocalizedMessage())
+				);
+				return ResponseWrapper.<DispatchDto>builder()
+						.data(dispatchDto)
+						.message("OK")
+						.build();
 			}
-		});
-		*/
+			
+		}).switchIfEmpty(this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)));
+		
 		
 		//resp.subscribe(s -> System.out.println("Mono info "+s.getClass()));
 			
-		return Mono.just(ResponseWrapper.<DispatchDto>builder()
-				.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
-				.build());
+//		return Mono.just(ResponseWrapper.<DispatchDto>builder()
+//				.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
+//				.build());
 		
+	}
+	
+	public Mono<ResponseWrapper<DispatchDto>> save(Dispatches dispatches){
+		return this.repository.save(dispatches).map(d->{
+			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(dispatches);
+			return ResponseWrapper.<DispatchDto>builder()
+					.data(dispatchDto)
+					.message("OK")
+					.build();
+		});
 	}
 	
 
