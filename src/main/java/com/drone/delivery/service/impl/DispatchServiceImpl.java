@@ -127,7 +127,9 @@ public class DispatchServiceImpl implements DispatchService {
 		this.repository.save(dispatches).subscribe(
 				d -> dispatchDto.setId(dispatches.getId())
 		);		
-		return null;
+		return Mono.just(ResponseWrapper.<DispatchDto>builder()
+				.data(dispatchDto)
+				.build());
 	}
 	
 
