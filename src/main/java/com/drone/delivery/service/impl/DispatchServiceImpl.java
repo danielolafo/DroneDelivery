@@ -119,12 +119,6 @@ public class DispatchServiceImpl implements DispatchService {
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
 		
-//		Mono<Dispatches> dispatchesMono = this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate());
-//		dispatchesMono.hasElement().map(u -> Mono.error(new Exception("Only can send one delivery at day")));
-//		Dispatches dispatches = DispatchMapper.INSTANCE.toEntity(dispatchDto);
-//		dispatchesMono.subscribe(m ->System.out.println("Found "+m.getId()));
-		
-		
 		return  this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate())
 		.map(d->{
 			log.info("d.getId() "+d.getId());
@@ -149,17 +143,20 @@ public class DispatchServiceImpl implements DispatchService {
 		}).switchIfEmpty(this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)));
 		
 		
-		//resp.subscribe(s -> System.out.println("Mono info "+s.getClass()));
-			
-//		return Mono.just(ResponseWrapper.<DispatchDto>builder()
-//				.data(Objects.nonNull(dispatches.getId()) ? dispatchDto : DispatchDto.builder().build())
-//				.build());
-		
 	}
 	
+	
+	/**
+	 * <p>Saves a Dispatch entity into the database</p>
+	 * @param dispatches
+	 * @return The <strong>new saved</strong> entity
+	 * @author Daniel Orlando López Ochoa
+	 */
 	public Mono<ResponseWrapper<DispatchDto>> save(Dispatches dispatches){
 		return this.repository.save(dispatches).map(d->{
-			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(dispatches);
+			log.info("Saved dispatches "+d.getId());
+			log.info("Saved dispatches 2 "+dispatches.getId());
+			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(d);
 			return ResponseWrapper.<DispatchDto>builder()
 					.data(dispatchDto)
 					.message("OK")
