@@ -153,7 +153,9 @@ public class DispatchServiceImpl implements DispatchService {
 	 * @author Daniel Orlando López Ochoa
 	 */
 	public Mono<ResponseWrapper<DispatchDto>> save(Dispatches dispatches){
+		
 		return this.repository.save(dispatches).map(d->{
+			log.info("Saved dispatches "+dispatches);
 			log.info("Saved dispatches "+d.getId());
 			log.info("Saved dispatches 2 "+dispatches.getId());
 			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(d);
