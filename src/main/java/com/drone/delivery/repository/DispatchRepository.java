@@ -3,14 +3,13 @@ package com.drone.delivery.repository;
 import java.time.LocalDate;
 
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
-import org.springframework.stereotype.Repository;
 
 import com.drone.delivery.entity.Dispatches;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Repository
+//@Repository
 public interface DispatchRepository extends R2dbcRepository<Dispatches, Integer> {
 	
 	Flux<Dispatches> findByCustomerId(Integer customerId);
