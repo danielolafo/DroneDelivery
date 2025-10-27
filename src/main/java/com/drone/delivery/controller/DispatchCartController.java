@@ -1,5 +1,7 @@
 package com.drone.delivery.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +20,9 @@ public class DispatchCartController {
 		this.dispatchCartService = dispatchCartService;
 	}
 	
-	public Mono<DispatchCartDto> createCart(DispatchCartService dispatchCartService){
-		return this.dispatchCartService.create(null);
+	@PostMapping
+	public Mono<DispatchCartDto> createCart(@RequestBody DispatchCartDto dispatchCartDto){
+		return this.dispatchCartService.create(dispatchCartDto);
 	}
 
 }

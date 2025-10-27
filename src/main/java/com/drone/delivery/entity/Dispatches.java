@@ -2,7 +2,8 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -77,10 +77,10 @@ public class Dispatches {
 //    @JoinColumn(name = "drone_id", nullable = false)
 //    private Drone drone;
 //
-//    @OneToMany(mappedBy = "dispatches")
-//    private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
+    @Transient
+    private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
 //
-//    @OneToMany(mappedBy = "dispatches")
-//    private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
+    @Transient
+    private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
 
 }

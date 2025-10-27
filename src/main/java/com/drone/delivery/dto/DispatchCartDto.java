@@ -1,8 +1,7 @@
 package com.drone.delivery.dto;
 
 import java.math.BigDecimal;
-
-import com.drone.delivery.entity.Products;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +24,11 @@ public class DispatchCartDto {
 
     private BigDecimal cost;
 
-    private Integer product;
+    private Integer productId;
 
     private Integer dispatchId;
+    
+    private List<ProductDto> lstProductDtos;
 	
 
 }
