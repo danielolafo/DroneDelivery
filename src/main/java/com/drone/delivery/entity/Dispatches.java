@@ -2,6 +2,8 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -76,12 +79,12 @@ public class Dispatches {
 //    private Drone drone;
 //
     
-    /*
+    
     @Transient
     private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
 //
     @Transient
     private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
-    */
+    
 
 }

@@ -1,6 +1,7 @@
 package com.drone.delivery.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.drone.delivery.dto.DispatchCartDto;
 import com.drone.delivery.mapper.DispatchCartMapper;
@@ -32,7 +33,7 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 	}
 
 	@Override
-	public Mono<DispatchCartDto> create(DispatchCartDto dispatchCartDto) {
+	public Mono<DispatchCartDto> create(@Validated DispatchCartDto dispatchCartDto) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCartDto);
 		return this.repository
 				.save(DispatchCartMapper.INSTANCE.toEntity(dispatchCartDto))
