@@ -28,15 +28,14 @@ public class Dispatches {
 	
 	@Id
     @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "dispatches_seq1",
-            sequenceName = "dispatches_seq1",
-            allocationSize = 1,
-            initialValue = 10000
-    )
+//    @SequenceGenerator(
+//            name = "dispatches_seq1",
+//            sequenceName = "dispatches_seq1",
+//            allocationSize = 1,
+//            initialValue = 10000
+//    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "dispatches_seq1"
+            strategy = GenerationType.AUTO
     )
     private Integer id;
 
@@ -68,6 +67,9 @@ public class Dispatches {
     
     @Column(name="drone_id")
     private Integer droneId;
+    
+    @Column(name="creation_date")
+    private LocalDate creationDate;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "customer_id", nullable = false)
@@ -77,10 +79,13 @@ public class Dispatches {
 //    @JoinColumn(name = "drone_id", nullable = false)
 //    private Drone drone;
 //
+    
+    /*
     @Transient
     private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
 //
     @Transient
     private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
+    */
 
 }

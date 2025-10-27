@@ -54,5 +54,7 @@ public class DispatchDto {
  
     
     //private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();
+    
+    private LocalDate creationDate;
 
 }
