@@ -1,5 +1,7 @@
 package com.drone.delivery.controller;
 
+import java.util.UUID;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +40,11 @@ public class DispatchController {
 	@PostMapping
 	public Mono<ResponseWrapper<DispatchDto>> create(@RequestBody DispatchDto dispatchDto){
 		return this.dispatchService.create(dispatchDto);
+	}
+	
+	@GetMapping("/get-by-unid/{unid}")
+	public Mono<ResponseWrapper<DispatchDto>> getByUnit(@PathVariable("unid") UUID unid){
+		return this.dispatchService.getByUnit(unid);
 	}
 
 }

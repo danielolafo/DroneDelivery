@@ -3,8 +3,8 @@ package com.drone.delivery.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.drone.delivery.entity.Drone;
 
@@ -56,5 +56,6 @@ public class DispatchDto {
     //private Set<DispatchComments> dispatchDispatchComments = new HashSet<>();
     
     private LocalDate creationDate;
+    private UUID unid;
 
 }

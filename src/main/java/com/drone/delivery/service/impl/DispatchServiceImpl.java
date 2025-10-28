@@ -1,6 +1,7 @@
 package com.drone.delivery.service.impl;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -153,17 +154,52 @@ public class DispatchServiceImpl implements DispatchService {
 	 * @author Daniel Orlando López Ochoa
 	 */
 	public Mono<ResponseWrapper<DispatchDto>> save(Dispatches dispatches){
+		if(Objects.isNull(dispatches.getUnid())) {
+			dispatches.setUnid(UUID.randomUUID());
+		}
+		
 		
 		return this.repository.save(dispatches).map(d->{
 			log.info("Saved dispatches "+dispatches);
 			log.info("Saved dispatches "+d.getId());
 			log.info("Saved dispatches 2 "+dispatches.getId());
+			log.info("Saved dispatches 2 "+dispatches.getUnid());
 			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(d);
+			this.findByUnid(dispatches.getUnid()).map(s->
+			{
+			log.info("Calling findByUnid "+dispatches.getId());
+			return ResponseWrapper.<DispatchDto>builder()
+					.data(dispatchDto)
+					.message("OK")
+					.build();
+			});
 			return ResponseWrapper.<DispatchDto>builder()
 					.data(dispatchDto)
 					.message("OK")
 					.build();
 		});
+		
+	}
+	
+	public Mono<Dispatches> findByUnid(UUID uuid){
+		return this.repository.findByUnid(uuid).map(disp -> {
+			log.info("disp.id "+disp.getId());
+			return disp;
+		}).switchIfEmpty(empty());
+	}
+	
+	public Mono<Dispatches> empty(){
+		log.info("Mono Empty");
+		return Mono.empty();
+	}
+
+	@Override
+	public Mono<ResponseWrapper<DispatchDto>> getByUnit(UUID unid) {
+		return this.findByUnid(unid).map(disp -> ResponseWrapper.<DispatchDto>builder()
+				.data(DispatchMapper.INSTANCE.toDto(disp))
+				.message("OK")
+				.build());
+		
 	}
 	
 

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -69,6 +70,9 @@ public class Dispatches {
     
     @Column(name="creation_date")
     private LocalDate creationDate;
+    
+    @Column(name="unid")
+    private UUID unid;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "customer_id", nullable = false)
@@ -79,12 +83,12 @@ public class Dispatches {
 //    private Drone drone;
 //
     
-    
+    /*
     @Transient
     private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
 //
     @Transient
     private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
-    
+    */
 
 }

@@ -1,6 +1,7 @@
 package com.drone.delivery.repository;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 
@@ -17,5 +18,7 @@ public interface DispatchRepository extends R2dbcRepository<Dispatches, Integer>
 	public Mono<Dispatches> findByOriginAndTargetAndStartDate(String origin, String target, LocalDate startDate);
 	
 	public Mono<Dispatches> findByOriginAndTarget(String origin, String target);
+	
+	public Mono<Dispatches> findByUnid(UUID unid);
 
 }
