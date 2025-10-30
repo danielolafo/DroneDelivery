@@ -49,7 +49,7 @@ public class DispatchServiceImpl implements DispatchService {
 				.id(dis.getId())
 				.build());
 		
-		return this.repository.findAll().flatMap(dis ->
+		return this.repository.findByCustomerId(customerId).flatMap(dis ->
 			dispatchCartDtos
 			.filter(dc -> Objects.nonNull(dc.getDispatchId()) 
 					&& dc.getDispatchId().equals(dis.getId()))
