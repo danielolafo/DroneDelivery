@@ -160,10 +160,6 @@ public class DispatchServiceImpl implements DispatchService {
 		
 		
 		return this.repository.save(dispatches).map(d->{
-			log.info("Saved dispatches "+dispatches);
-			log.info("Saved dispatches "+d.getId());
-			log.info("Saved dispatches 2 "+dispatches.getId());
-			log.info("Saved dispatches 2 "+dispatches.getUnid());
 			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(d);
 			this.findByUnid(dispatches.getUnid()).map(s->
 			{
