@@ -96,10 +96,6 @@ public class DispatchServiceImpl implements DispatchService {
 
 		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
 		
-		dispatchCartDtos.subscribe(
-				c -> System.out.println("ABCD"),
-				error -> System.out.println("ABCD ERROR "+error.getLocalizedMessage())
-		);
 		
 		return dispatchDtos.flatMap(dispatchDto ->
 			dispatchCartDtos.filter(dispatchCartDto -> 
