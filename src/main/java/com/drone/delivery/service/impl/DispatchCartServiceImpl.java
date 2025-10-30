@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.drone.delivery.dto.DispatchCartDto;
+import com.drone.delivery.entity.DispatchCart;
 import com.drone.delivery.mapper.DispatchCartMapper;
 import com.drone.delivery.repository.DispatchCartRepository;
 import com.drone.delivery.service.DispatchCartService;
@@ -35,10 +36,24 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 	@Override
 	public Mono<DispatchCartDto> create(@Validated DispatchCartDto dispatchCartDto) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCartDto);
+		return this.findByDispatchAndProduct(dispatchCartDto.getDispatchId(), dispatchCartDto.getProductId())
+		.map(dis ->{
+			log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), "This product has been already added to the cart");
+			return DispatchCartDto.builder().build();
+		}).switchIfEmpty(this.save(DispatchCartMapper.INSTANCE.toEntity(dispatchCartDto)));
+	}
+	
+	public Mono<DispatchCart> findByDispatchAndProduct(Integer dispatchId, Integer productId){
+		return this.repository.findByDispatchIdAndProductId(dispatchId, productId);
+	}
+	
+	public Mono<DispatchCartDto> save(DispatchCart dispatchCart) {
+		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCart);
 		return this.repository
-				.save(DispatchCartMapper.INSTANCE.toEntity(dispatchCartDto))
+				.save(dispatchCart)
 				.map(dis -> {
-					log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCartDto);
+					log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCart);
+					DispatchCartDto dispatchCartDto = new DispatchCartDto();
 					dispatchCartDto.setId(dis.getId());
 					return dispatchCartDto;
 				});

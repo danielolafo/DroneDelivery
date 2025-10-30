@@ -6,10 +6,13 @@ import org.springframework.stereotype.Repository;
 import com.drone.delivery.entity.DispatchCart;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 public interface DispatchCartRepository extends R2dbcRepository<DispatchCart, Integer> {
 	
 	public Flux<DispatchCart> findByDispatchId(Integer dispatchId);
+	
+	public Mono<DispatchCart> findByDispatchIdAndProductId(Integer dispatchId, Integer productId);
 
 }
