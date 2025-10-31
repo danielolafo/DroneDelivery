@@ -179,15 +179,15 @@ public class DispatchServiceImpl implements DispatchService {
 			dispatchDto.getLstDispatchCartDto().forEach(cart -> {
 				log.info("Asigning ID "+dis.getData().getId());
 				cart.setDispatchId(1);
-				this.dispatchCartService.create(cart).subscribe(s->System.out.println("Called dispatchCart save"));
-				/*
+				//this.dispatchCartService.create(cart).subscribe(s->System.out.println("Called dispatchCart save"));
+				
 				this.dispatchCartService.create(cart).map(c->{
 					log.debug("Saved cart ***");
 					return null;
 				}).doOnError(s->{
 					log.info("DO ON ERORR");
-				});
-				*/
+				}).subscribe();
+				
 			});
 			return ResponseWrapper.<DispatchDto>builder()
 					.data(dispatchDto)
