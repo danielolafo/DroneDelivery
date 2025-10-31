@@ -49,10 +49,12 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 	
 	public Mono<DispatchCartDto> save(DispatchCart dispatchCart) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCart);
+//		this.repository
+//				.save(dispatchCart).subscribe(s->System.out.println("CALLING SUBSCRIBE"));
 		return this.repository
 				.save(dispatchCart)
 				.map(dis -> {
-					log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCart);
+					log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), "DispatchCart saved");
 					DispatchCartDto dispatchCartDto = new DispatchCartDto();
 					dispatchCartDto.setId(dis.getId());
 					return dispatchCartDto;

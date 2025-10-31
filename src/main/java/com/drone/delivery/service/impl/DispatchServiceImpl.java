@@ -137,7 +137,7 @@ public class DispatchServiceImpl implements DispatchService {
 						.build();
 			}
 			
-		}).switchIfEmpty(this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)));
+		}).switchIfEmpty(this.save(dispatchDto));
 		
 		
 	}
@@ -165,12 +165,35 @@ public class DispatchServiceImpl implements DispatchService {
 					.message("OK")
 					.build();
 			});
+			
 			return ResponseWrapper.<DispatchDto>builder()
 					.data(dispatchDto)
 					.message("OK")
 					.build();
 		});
 		
+	}
+	
+	public Mono<ResponseWrapper<DispatchDto>> save(DispatchDto dispatchDto){
+		return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).map(dis->{
+			dispatchDto.getLstDispatchCartDto().forEach(cart -> {
+				log.info("Asigning ID "+dis.getData().getId());
+				cart.setDispatchId(1);
+				this.dispatchCartService.create(cart).subscribe(s->System.out.println("Called dispatchCart save"));
+				/*
+				this.dispatchCartService.create(cart).map(c->{
+					log.debug("Saved cart ***");
+					return null;
+				}).doOnError(s->{
+					log.info("DO ON ERORR");
+				});
+				*/
+			});
+			return ResponseWrapper.<DispatchDto>builder()
+					.data(dispatchDto)
+					.message("OK")
+					.build();
+		});
 	}
 	
 	public Mono<Dispatches> findByUnid(UUID uuid){

@@ -15,8 +15,11 @@ import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 import com.drone.delivery.dto.ResponseWrapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ControllerAdvice
-@Order(Ordered.HIGHEST_PRECEDENCE)
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
 public class CustomExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,6 +31,7 @@ public class CustomExceptionHandler {
 			sb.append(oe.getDefaultMessage()).append(" ");
 			lstErrors.add(oe.getDefaultMessage());
 		}
+		log.error("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), ex.getLocalizedMessage());
 		return new ResponseEntity<>(ResponseWrapper.<Set<String>>builder()
 				.message(sb.toString())
 				.data(lstErrors)
@@ -37,6 +41,7 @@ public class CustomExceptionHandler {
 	
 	@ExceptionHandler(BadRequest.class)
 	public ResponseEntity<ResponseWrapper<Boolean>> handleBadRequest(BadRequest ex){
+		log.error("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), ex.getLocalizedMessage());
 		return new ResponseEntity<>(ResponseWrapper.<Boolean>builder()
 				.message(ex.getLocalizedMessage())
 				.build(), 
@@ -45,6 +50,8 @@ public class CustomExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseWrapper<Boolean>> handleException(Exception ex){
+		log.error("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), ex.getLocalizedMessage());
+		log.error("Error +++++ "+ex.getClass().getName());
 		return new ResponseEntity<>(ResponseWrapper.<Boolean>builder()
 				.message(ex.getLocalizedMessage())
 				.build(), 

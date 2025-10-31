@@ -14,7 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @Table(name="dispatch_cart")
 @Builder
 @AllArgsConstructor
@@ -25,14 +25,14 @@ public class DispatchCart {
 	@Id
     @Column(nullable = false, updatable = false)
     @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
+            name = "dispatch_cart_seq1",
+            sequenceName = "dispatch_cart_seq1",
             allocationSize = 1,
             initialValue = 10000
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
+            generator = "dispatch_cart_seq1"
     )
     private Integer id;
 
