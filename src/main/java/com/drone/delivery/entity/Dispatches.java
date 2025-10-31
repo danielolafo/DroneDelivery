@@ -2,8 +2,6 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -12,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,7 +34,7 @@ public class Dispatches {
     @GeneratedValue(
             strategy = GenerationType.AUTO
     )
-    private Integer id;
+    private UUID id;
 
     @Column(length = 100)
     private String origin;
@@ -63,17 +60,15 @@ public class Dispatches {
     private BigDecimal kmDone;
     
     @Column(name="customer_id")
-    private Integer customerId;
+    private UUID customerId;
     
     @Column(name="drone_id")
-    private Integer droneId;
+    private UUID droneId;
     
     @Column(name="creation_date")
     private LocalDate creationDate;
     
-    @Column(name="unid")
-    private UUID unid;
-
+   
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "customer_id", nullable = false)
 //    private Customer customer;

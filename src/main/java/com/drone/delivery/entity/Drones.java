@@ -3,6 +3,7 @@ package com.drone.delivery.entity;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,21 +25,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="Drones")
-public class Drone {
+public class Drones {
 	
 	@Id
     @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private Integer id;
+    
+    private UUID id;
 
     @Column(length = 50)
     private String name;
@@ -52,6 +44,7 @@ public class Drone {
     @Column(precision = 3, scale = 2)
     private BigDecimal batteryAutonomy;
 
+    /*
     //@OneToMany(mappedBy = "drone")
     @Transient
     private Set<DroneMaintenance> droneDroneMaintenances = new HashSet<>();
@@ -59,5 +52,6 @@ public class Drone {
     //@OneToMany(mappedBy = "drone")
     @Transient
     private Set<Dispatches> droneDispatches = new HashSet<>();
+    */
 
 }

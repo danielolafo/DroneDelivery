@@ -39,7 +39,7 @@ public class DispatchServiceImpl implements DispatchService {
 	}
 
 	@Override
-	public Flux<DispatchDto> getDispatchHistory(Integer customerId) {
+	public Flux<DispatchDto> getDispatchHistory(UUID customerId) {
 		log.info("getDispatchHistory - : customerId "+customerId);
 
 		Flux<DispatchCartDto> dispatchCartDtos = this.dispatchCartService.getDispatchContent(customerId);
@@ -76,14 +76,14 @@ public class DispatchServiceImpl implements DispatchService {
 	}
 
 	@Override
-	public Flux<Dispatches> getDispatchHistoryPlain(Integer customerId) {
+	public Flux<Dispatches> getDispatchHistoryPlain(UUID customerId) {
 		// TODO Auto-generated method stub
 		return this.repository.findAll();
 		//return null;
 	}
 
 	@Override
-	public Flux<CartHistory> getHistory(Integer customerId) {
+	public Flux<CartHistory> getHistory(UUID customerId) {
 		log.info("getDispatchHistory - : customerId "+customerId);
 		Flux<DispatchDto> dispatchDtos = this.repository.findAll()
 				.map(dis -> DispatchDto.builder()
@@ -115,7 +115,7 @@ public class DispatchServiceImpl implements DispatchService {
 	@Override
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
-		
+		dispatchDto.setId(UUID.randomUUID());
 		return  this.repository.findByOriginAndTargetAndStartDate(dispatchDto.getOrigin(), dispatchDto.getTarget(), dispatchDto.getStartDate())
 		.map(d->{
 			log.info("d.getId() "+d.getId());
@@ -150,21 +150,9 @@ public class DispatchServiceImpl implements DispatchService {
 	 * @author Daniel Orlando López Ochoa
 	 */
 	public Mono<ResponseWrapper<DispatchDto>> save(Dispatches dispatches){
-		if(Objects.isNull(dispatches.getUnid())) {
-			dispatches.setUnid(UUID.randomUUID());
-		}
-		
 		
 		return this.repository.save(dispatches).map(d->{
 			DispatchDto dispatchDto = DispatchMapper.INSTANCE.toDto(d);
-			this.findByUnid(dispatches.getUnid()).map(s->
-			{
-			log.info("Calling findByUnid "+dispatches.getId());
-			return ResponseWrapper.<DispatchDto>builder()
-					.data(dispatchDto)
-					.message("OK")
-					.build();
-			});
 			
 			return ResponseWrapper.<DispatchDto>builder()
 					.data(dispatchDto)
@@ -178,7 +166,6 @@ public class DispatchServiceImpl implements DispatchService {
 		return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).map(dis->{
 			dispatchDto.getLstDispatchCartDto().forEach(cart -> {
 				log.info("Asigning ID "+dis.getData().getId());
-				cart.setDispatchId(1);
 				//this.dispatchCartService.create(cart).subscribe(s->System.out.println("Called dispatchCart save"));
 				
 				this.dispatchCartService.create(cart).map(c->{
@@ -196,26 +183,11 @@ public class DispatchServiceImpl implements DispatchService {
 		});
 	}
 	
-	public Mono<Dispatches> findByUnid(UUID uuid){
-		return this.repository.findByUnid(uuid).map(disp -> {
-			log.info("disp.id "+disp.getId());
-			return disp;
-		}).switchIfEmpty(empty());
-	}
 	
 	public Mono<Dispatches> empty(){
 		log.info("Mono Empty");
 		return Mono.empty();
 	}
 
-	@Override
-	public Mono<ResponseWrapper<DispatchDto>> getByUnit(UUID unid) {
-		return this.findByUnid(unid).map(disp -> ResponseWrapper.<DispatchDto>builder()
-				.data(DispatchMapper.INSTANCE.toDto(disp))
-				.message("OK")
-				.build());
-		
-	}
-	
 
 }

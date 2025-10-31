@@ -1,5 +1,7 @@
 package com.drone.delivery.service.impl;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,7 +26,7 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 	}
 
 	@Override
-	public Flux<DispatchCartDto> getDispatchContent(Integer dispatchId) {
+	public Flux<DispatchCartDto> getDispatchContent(UUID dispatchId) {
 		return this.repository.findByDispatchId(dispatchId)
 		.map(dis -> {
 			System.out.println("dispatch_cart_serviceimpl "+dis.getDispatchId());
@@ -36,6 +38,7 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 	@Override
 	public Mono<DispatchCartDto> create(@Validated DispatchCartDto dispatchCartDto) {
 		log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchCartDto);
+		dispatchCartDto.setId(UUID.randomUUID());
 		return this.findByDispatchAndProduct(dispatchCartDto.getDispatchId(), dispatchCartDto.getProductId())
 		.map(dis ->{
 			log.info("{} : {}", Thread.currentThread().getStackTrace()[1].getMethodName(), "This product has been already added to the cart");
@@ -43,7 +46,7 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 		}).switchIfEmpty(this.save(DispatchCartMapper.INSTANCE.toEntity(dispatchCartDto)));
 	}
 	
-	public Mono<DispatchCart> findByDispatchAndProduct(Integer dispatchId, Integer productId){
+	public Mono<DispatchCart> findByDispatchAndProduct(UUID dispatchId, UUID productId){
 		return this.repository.findByDispatchIdAndProductId(dispatchId, productId);
 	}
 	

@@ -1,5 +1,7 @@
 package com.drone.delivery.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class CustomerLocation {
             strategy = GenerationType.SEQUENCE,
             generator = "primary_sequence"
     )
-    private Integer id;
+    private UUID id;
 
     @Column(length = 100)
     private String address;
@@ -29,7 +31,7 @@ public class CustomerLocation {
     private Integer city;
     
     @Column(name="customer_id" ,nullable = false)
-    private Integer customerId;
+    private UUID customerId;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "customer_id", nullable = false)

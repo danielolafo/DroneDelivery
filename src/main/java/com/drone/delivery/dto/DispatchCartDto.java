@@ -2,6 +2,7 @@ package com.drone.delivery.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class DispatchCartDto {
 	
-	private Integer id;
+	private UUID id;
 
     private BigDecimal unitWeight;
 
@@ -27,10 +28,10 @@ public class DispatchCartDto {
 
     private BigDecimal cost;
 
-    private Integer productId;
+    private UUID productId;
 
     @NotNull(message="The cart must be attached to a dispatch")
-    private Integer dispatchId;
+    private UUID dispatchId;
     
     @NotEmpty(message="The cart must have at least one product")
     @Size(min=1, message="The cart must have at least one product")

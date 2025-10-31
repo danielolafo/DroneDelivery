@@ -1,6 +1,7 @@
 package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
@@ -25,7 +26,7 @@ public class DispatchComments {
             strategy = GenerationType.SEQUENCE,
             generator = "primary_sequence"
     )
-    private Integer id;
+    private UUID id;
 
     @Column(nullable = false, length = 250)
     private String dispatchComment;
@@ -35,6 +36,6 @@ public class DispatchComments {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dispatch_id", nullable = false)
-    private Dispatches dispatch;
+    private UUID dispatchId;
 
 }

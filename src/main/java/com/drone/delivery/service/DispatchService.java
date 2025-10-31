@@ -16,14 +16,13 @@ public interface DispatchService {
 	
 	public Mono<ResponseWrapper<DispatchDto>> dispatch(DispatchDto dispatchDto);
 	
-	public Flux<DispatchDto> getDispatchHistory(Integer customerId);
+	public Flux<DispatchDto> getDispatchHistory(UUID customerId);
 	
-	public Flux<Dispatches> getDispatchHistoryPlain(Integer customerId);
+	public Flux<Dispatches> getDispatchHistoryPlain(UUID customerId);
 	
-	public Flux<CartHistory> getHistory(Integer customerId);
+	public Flux<CartHistory> getHistory(UUID customerId);
 	
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto);
 	
-	Mono<ResponseWrapper<DispatchDto>> getByUnit(UUID unid);
 
 }

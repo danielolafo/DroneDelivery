@@ -1,8 +1,7 @@
 package com.drone.delivery.dto;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductDto {
 	
-	private Integer id;
+	private UUID id;
 
     private String name;
 

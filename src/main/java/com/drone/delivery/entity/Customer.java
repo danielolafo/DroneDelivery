@@ -2,6 +2,7 @@ package com.drone.delivery.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Customer {
             strategy = GenerationType.SEQUENCE,
             generator = "primary_sequence"
     )
-    private Integer id;
+    private UUID id;
 
     @Column(length = 50)
     private String name;

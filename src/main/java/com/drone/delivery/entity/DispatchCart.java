@@ -1,9 +1,9 @@
 package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +34,7 @@ public class DispatchCart {
             strategy = GenerationType.SEQUENCE,
             generator = "dispatch_cart_seq1"
     )
-    private Integer id;
+    private UUID id;
 
     @Column(precision = 3, scale = 2)
     private BigDecimal unitWeight;
@@ -49,10 +49,10 @@ public class DispatchCart {
     private BigDecimal cost;
     
     @Column(name="product_id")
-    private Integer productId;
+    private UUID productId;
     
     @Column(name="dispatch_id")
-    private Integer dispatchId;
+    private UUID dispatchId;
 
 //    @JoinColumn(name = "product_id", referencedColumnName = "id")
 //    @ManyToOne(optional = false)

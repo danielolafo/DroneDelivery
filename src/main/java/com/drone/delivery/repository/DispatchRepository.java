@@ -12,14 +12,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface DispatchRepository extends R2dbcRepository<Dispatches, Integer> {
+public interface DispatchRepository extends R2dbcRepository<Dispatches, UUID> {
 	
-	Flux<Dispatches> findByCustomerId(Integer customerId);
+	Flux<Dispatches> findByCustomerId(UUID customerId);
 	
 	public Mono<Dispatches> findByOriginAndTargetAndStartDate(String origin, String target, LocalDate startDate);
 	
 	public Mono<Dispatches> findByOriginAndTarget(String origin, String target);
 	
-	public Mono<Dispatches> findByUnid(UUID unid);
 
 }

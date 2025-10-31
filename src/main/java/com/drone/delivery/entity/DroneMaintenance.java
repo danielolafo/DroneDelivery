@@ -2,6 +2,7 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
@@ -26,7 +27,7 @@ public class DroneMaintenance {
             strategy = GenerationType.SEQUENCE,
             generator = "primary_sequence"
     )
-    private Integer id;
+    private UUID id;
 
     @Column(nullable = false)
     private LocalDate maintenanceDate;
@@ -36,6 +37,6 @@ public class DroneMaintenance {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drone_id", nullable = false)
-    private Drone drone;
+    private UUID droneId;
 
 }

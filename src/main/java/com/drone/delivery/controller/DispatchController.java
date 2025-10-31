@@ -28,12 +28,12 @@ public class DispatchController {
 	}
 	
 	@GetMapping("/history/{customerId}")
-	public Flux<DispatchDto> getDispatchHistory(@PathVariable("customerId") Integer customerId){
+	public Flux<DispatchDto> getDispatchHistory(@PathVariable("customerId") UUID customerId){
 		return this.dispatchService.getDispatchHistory(customerId);
 	}
 	
 	@GetMapping("/cart/{customerId}")
-	public Flux<CartHistory> getDispatchHistoryPlain(@PathVariable("customerId") Integer customerId){
+	public Flux<CartHistory> getDispatchHistoryPlain(@PathVariable("customerId") UUID customerId){
 		return this.dispatchService.getHistory(customerId);
 	}
 	
@@ -42,9 +42,5 @@ public class DispatchController {
 		return this.dispatchService.create(dispatchDto);
 	}
 	
-	@GetMapping("/get-by-unid/{unid}")
-	public Mono<ResponseWrapper<DispatchDto>> getByUnit(@PathVariable("unid") UUID unid){
-		return this.dispatchService.getByUnit(unid);
-	}
 
 }

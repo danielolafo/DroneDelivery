@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.drone.delivery.entity.Drone;
+import com.drone.delivery.entity.Drones;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class DispatchDto {
 	
 	
-	private Integer id;
+	private UUID id;
 
     private String origin;
 
@@ -42,12 +42,12 @@ public class DispatchDto {
     
     private BigDecimal kmDone;
 
-    private Integer customerId;
+    private UUID customerId;
 
   
-    private Drone drone;
+    private Drones drone;
     
-    private Integer droneId;
+    private UUID droneId;
 
     
     private List<DispatchCartDto> lstDispatchCartDto = new ArrayList<>();
