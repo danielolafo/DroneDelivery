@@ -194,24 +194,20 @@ public class DispatchServiceImpl implements DispatchService {
 	public Flux<DispatchDto> getAllHistory() {
 		Flux<DispatchDto> dispatches = this.repository.findAll().map(d-> DispatchMapper.INSTANCE.toDto(d));
 		Flux<DispatchCartDto> dispatchCart = this.dispatchCartService.getAllHistory();
-		return dispatches.map(dis->{
+		return dispatches.flatMap(dis->{
 			dis.setLstDispatchCartDto(new ArrayList<>());
 			log.info("Dis.id {}", dis.getId());
-//			dispatchCart.map(d->{
-//				log.info("Dispatch cart {} ", d.getId());
-//				return null;
-//			});
-			dispatchCart.filter(dc-> dc.getDispatchId().equals(dis.getId()))
+			return dispatchCart.filter(dc-> dc.getDispatchId().equals(dis.getId()))
 			.collectList()
 			.map(dc-> {
 				//log.info("DispatchId : {}, Cart dipsatch id: {} - ARE EQUAL? {}",dis.getId(), dc.getDispatchId(), dis.getId().equals(dc.getDispatchId()));
 				log.info("Setting dispatchCart to List****");
 				dis.setLstDispatchCartDto(dc);
 				log.info("dis.getList().size() 1 {} ", dis.getLstDispatchCartDto().size());
-				return dc;
-			}).subscribe();
-			log.info("dis.getList().size() 2 {} ", dis.getLstDispatchCartDto().size());
-			return dis;
+				return dis;
+			});
+			//log.info("dis.getList().size() 2 {} ", dis.getLstDispatchCartDto().size());
+			//return dis;
 		});
 		
 	}
