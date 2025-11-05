@@ -202,11 +202,15 @@ public class DispatchServiceImpl implements DispatchService {
 //				return null;
 //			});
 			dispatchCart.filter(dc-> dc.getDispatchId().equals(dis.getId()))
+			.collectList()
 			.map(dc-> {
-				log.info("DispatchId : {}, Cart dipsatch id: {}",dis.getId(), dc.getId());
-				dis.getLstDispatchCartDto().add(dc);
+				//log.info("DispatchId : {}, Cart dipsatch id: {} - ARE EQUAL? {}",dis.getId(), dc.getDispatchId(), dis.getId().equals(dc.getDispatchId()));
+				log.info("Setting dispatchCart to List****");
+				dis.setLstDispatchCartDto(dc);
+				log.info("dis.getList().size() 1 {} ", dis.getLstDispatchCartDto().size());
 				return dc;
 			}).subscribe();
+			log.info("dis.getList().size() 2 {} ", dis.getLstDispatchCartDto().size());
 			return dis;
 		});
 		
