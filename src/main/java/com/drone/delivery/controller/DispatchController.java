@@ -42,5 +42,10 @@ public class DispatchController {
 		return this.dispatchService.create(dispatchDto);
 	}
 	
+	@GetMapping("/all")
+	public Flux<DispatchDto> getDispatchAllHistory(){
+		return this.dispatchService.getAllHistory();
+	}
+	
 
 }

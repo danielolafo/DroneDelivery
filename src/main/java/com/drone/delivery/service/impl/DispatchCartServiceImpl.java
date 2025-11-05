@@ -64,4 +64,14 @@ public class DispatchCartServiceImpl implements DispatchCartService {
 				});
 	}
 
+	@Override
+	public Flux<DispatchCartDto> getAllHistory() {
+		log.info("***************************ALL HISTORY***************************");
+		return this.repository.findAll()
+				.map(dc -> {
+					log.info("dc {} dc.getDispatchId() {}", dc.getId(), dc.getDispatchId());
+					return DispatchCartMapper.INSTANCE.toDto(dc);
+				});
+	}
+
 }

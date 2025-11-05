@@ -12,5 +12,7 @@ public interface DispatchCartService {
 	public Flux<DispatchCartDto> getDispatchContent(UUID dispatchId);
 	
 	public Mono<DispatchCartDto> create(DispatchCartDto dispatchCartDto);
+	
+	public Flux<DispatchCartDto> getAllHistory();
 
 }

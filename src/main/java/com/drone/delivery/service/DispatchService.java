@@ -24,5 +24,7 @@ public interface DispatchService {
 	
 	public Mono<ResponseWrapper<DispatchDto>> create(DispatchDto dispatchDto);
 	
+	public Flux<DispatchDto> getAllHistory();
+	
 
 }

@@ -1,5 +1,6 @@
 package com.drone.delivery.service.impl;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -187,6 +188,28 @@ public class DispatchServiceImpl implements DispatchService {
 	public Mono<Dispatches> empty(){
 		log.info("Mono Empty");
 		return Mono.empty();
+	}
+
+	@Override
+	public Flux<DispatchDto> getAllHistory() {
+		Flux<DispatchDto> dispatches = this.repository.findAll().map(d-> DispatchMapper.INSTANCE.toDto(d));
+		Flux<DispatchCartDto> dispatchCart = this.dispatchCartService.getAllHistory();
+		return dispatches.map(dis->{
+			dis.setLstDispatchCartDto(new ArrayList<>());
+			log.info("Dis.id {}", dis.getId());
+//			dispatchCart.map(d->{
+//				log.info("Dispatch cart {} ", d.getId());
+//				return null;
+//			});
+			dispatchCart.filter(dc-> dc.getDispatchId().equals(dis.getId()))
+			.map(dc-> {
+				log.info("DispatchId : {}, Cart dipsatch id: {}",dis.getId(), dc.getId());
+				dis.getLstDispatchCartDto().add(dc);
+				return dc;
+			}).subscribe();
+			return dis;
+		});
+		
 	}
 
 
