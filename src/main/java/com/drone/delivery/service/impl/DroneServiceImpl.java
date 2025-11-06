@@ -35,7 +35,7 @@ public class DroneServiceImpl implements DroneService {
 	@Override
 	public Mono<DroneDto> getAvailable(LocalDateTime startDate) {
 		log.info("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), startDate);
-		return this.droneRepository.getAvailableDrone(startDate)
+		return this.droneRepository.getAvailableDrone()
 		.map(dr-> {
 			log.info("drone {}", dr);
 			return DroneMapper.INSTANCE.toDto(dr);

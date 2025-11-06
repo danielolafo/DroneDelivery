@@ -178,20 +178,27 @@ public class DispatchServiceImpl implements DispatchService {
 	public Mono<ResponseWrapper<DispatchDto>> save(DispatchDto dispatchDto){
 		log.info("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
 		Mono<DroneDto> availDroneDto = this.droneService.getAvailable(dispatchDto.getStartDate());
-		return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).flatMap(dis->{
-			dispatchDto.getLstDispatchCartDto().forEach(dc->{
-				dc.setDispatchId(dispatchDto.getId());
-				this.dispatchCartService.create(dc).map(cart->{
-					cart.setDispatchId(dispatchDto.getId());
-					log.info("Created dispatch cart for the dispatch");
-					return cart;
-				}).subscribe();
-			});
-			return availDroneDto.map(dr->{
-				dispatchDto.setDroneId(dr.getId());
-				return dis;
-			});
-		}).doOnError(e->ResponseWrapper.<DispatchDto>builder().message("The dispatch cpuld not be created").build()).log("Error creating dispatch");
+		availDroneDto.subscribe(s->log.info("FOUND DRONE {}",s));
+		
+		return this.droneService.getAvailable(dispatchDto.getStartDate()).flatMap(dro->{
+			log.info("FOUND DRONE**** {}",dro);
+			dispatchDto.setDroneId(dro.getId());
+			return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).flatMap(dis->{
+				dispatchDto.getLstDispatchCartDto().forEach(dc->{
+					dc.setDispatchId(dis.getData().getId());
+					this.dispatchCartService.create(dc).map(cart->{
+						cart.setDispatchId(dispatchDto.getId());
+						log.info("Created dispatch cart for the dispatch");
+						return cart;
+					}).subscribe();
+				});
+				return availDroneDto.map(dr->{
+					dispatchDto.setDroneId(dr.getId());
+					return dis;
+				});
+			}).doOnError(e->ResponseWrapper.<DispatchDto>builder().message("The dispatch cpuld not be created").build()).log("Error creating dispatch");
+		});
+		
 	}
 	
 	

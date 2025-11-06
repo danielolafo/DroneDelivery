@@ -33,7 +33,7 @@ public class Dispatches {
             initialValue = 10000
     )
     @GeneratedValue(
-            strategy = GenerationType.AUTO
+            strategy = GenerationType.UUID
     )
     private UUID id;
 
