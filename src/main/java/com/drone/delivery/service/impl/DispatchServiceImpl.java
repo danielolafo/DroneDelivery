@@ -149,7 +149,8 @@ public class DispatchServiceImpl implements DispatchService {
 						.build();
 			}
 			
-		}).switchIfEmpty(this.save(dispatchDto));
+		}).switchIfEmpty(this.save(dispatchDto))
+		.doOnError(e->ResponseWrapper.<DispatchDto>builder().message("The dispatch cpuld not be created").build());
 		
 		
 	}
@@ -176,7 +177,7 @@ public class DispatchServiceImpl implements DispatchService {
 	
 	public Mono<ResponseWrapper<DispatchDto>> save(DispatchDto dispatchDto){
 		log.info("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
-		Mono<DroneDto> availDroneDto = this.droneService.getAvailable();
+		Mono<DroneDto> availDroneDto = this.droneService.getAvailable(dispatchDto.getStartDate());
 		return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).flatMap(dis->{
 			dispatchDto.getLstDispatchCartDto().forEach(dc->{
 				dc.setDispatchId(dispatchDto.getId());
@@ -190,7 +191,7 @@ public class DispatchServiceImpl implements DispatchService {
 				dispatchDto.setDroneId(dr.getId());
 				return dis;
 			});
-		});
+		}).doOnError(e->ResponseWrapper.<DispatchDto>builder().message("The dispatch cpuld not be created").build()).log("Error creating dispatch");
 	}
 	
 	

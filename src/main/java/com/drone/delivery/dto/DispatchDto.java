@@ -2,6 +2,7 @@ package com.drone.delivery.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -34,10 +35,10 @@ public class DispatchDto {
     private Integer paymentMethod;
 
     
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
    
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     
     private BigDecimal kmDone;

@@ -2,6 +2,7 @@ package com.drone.delivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -50,11 +51,11 @@ public class Dispatches {
 
     @Column(nullable = false)
     
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column
     
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column(precision = 3, scale = 2)
     private BigDecimal kmDone;
