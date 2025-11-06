@@ -28,4 +28,11 @@ public class DroneServiceImpl implements DroneService {
 		);
 	}
 
+	@Override
+	public Mono<DroneDto> getAvailable() {
+		return this.droneRepository.findAvailableDrone()
+		.map(dr-> DroneMapper.INSTANCE.toDto(dr))
+		.switchIfEmpty(Mono.just(DroneDto.builder().build()));
+	}
+
 }

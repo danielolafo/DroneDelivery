@@ -7,5 +7,7 @@ import reactor.core.publisher.Mono;
 public interface DroneService {
 	
 	public Mono<DroneDto> create(DroneDto dorneDto);
+	
+	public Mono<DroneDto> getAvailable();
 
 }

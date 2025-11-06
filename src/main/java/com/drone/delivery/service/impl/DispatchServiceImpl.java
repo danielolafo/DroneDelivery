@@ -5,16 +5,18 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
-
+import com.drone.delivery.config.CustomExceptionHandler;
 import com.drone.delivery.dto.CartHistory;
 import com.drone.delivery.dto.DispatchCartDto;
 import com.drone.delivery.dto.DispatchDto;
+import com.drone.delivery.dto.DroneDto;
 import com.drone.delivery.dto.ResponseWrapper;
 import com.drone.delivery.entity.Dispatches;
 import com.drone.delivery.mapper.DispatchMapper;
 import com.drone.delivery.repository.DispatchRepository;
 import com.drone.delivery.service.DispatchCartService;
 import com.drone.delivery.service.DispatchService;
+import com.drone.delivery.service.DroneService;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -24,13 +26,22 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class DispatchServiceImpl implements DispatchService {
 
+    private final CustomExceptionHandler customExceptionHandler;
+
 	private DispatchRepository repository;
 
 	private DispatchCartService dispatchCartService;
+	
+	private DroneService droneService;
 
-	public DispatchServiceImpl(DispatchRepository repository, DispatchCartService dispatchCartService) {
+	public DispatchServiceImpl(
+			DispatchRepository repository, 
+			DispatchCartService dispatchCartService,
+			DroneService droneService, CustomExceptionHandler customExceptionHandler) {
 		this.repository = repository;
 		this.dispatchCartService = dispatchCartService;
+		this.droneService = droneService;
+		this.customExceptionHandler = customExceptionHandler;
 	}
 
 	@Override
@@ -164,23 +175,21 @@ public class DispatchServiceImpl implements DispatchService {
 	}
 	
 	public Mono<ResponseWrapper<DispatchDto>> save(DispatchDto dispatchDto){
-		return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).map(dis->{
-			dispatchDto.getLstDispatchCartDto().forEach(cart -> {
-				log.info("Asigning ID "+dis.getData().getId());
-				//this.dispatchCartService.create(cart).subscribe(s->System.out.println("Called dispatchCart save"));
-				
-				this.dispatchCartService.create(cart).map(c->{
-					log.debug("Saved cart ***");
-					return null;
-				}).doOnError(s->{
-					log.info("DO ON ERORR");
+		log.info("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), dispatchDto);
+		Mono<DroneDto> availDroneDto = this.droneService.getAvailable();
+		return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).flatMap(dis->{
+			dispatchDto.getLstDispatchCartDto().forEach(dc->{
+				dc.setDispatchId(dispatchDto.getId());
+				this.dispatchCartService.create(dc).map(cart->{
+					cart.setDispatchId(dispatchDto.getId());
+					log.info("Created dispatch cart for the dispatch");
+					return cart;
 				}).subscribe();
-				
 			});
-			return ResponseWrapper.<DispatchDto>builder()
-					.data(dispatchDto)
-					.message("OK")
-					.build();
+			return availDroneDto.map(dr->{
+				dispatchDto.setDroneId(dr.getId());
+				return dis;
+			});
 		});
 	}
 	
@@ -196,18 +205,13 @@ public class DispatchServiceImpl implements DispatchService {
 		Flux<DispatchCartDto> dispatchCart = this.dispatchCartService.getAllHistory();
 		return dispatches.flatMap(dis->{
 			dis.setLstDispatchCartDto(new ArrayList<>());
-			log.info("Dis.id {}", dis.getId());
 			return dispatchCart.filter(dc-> dc.getDispatchId().equals(dis.getId()))
 			.collectList()
 			.map(dc-> {
-				//log.info("DispatchId : {}, Cart dipsatch id: {} - ARE EQUAL? {}",dis.getId(), dc.getDispatchId(), dis.getId().equals(dc.getDispatchId()));
-				log.info("Setting dispatchCart to List****");
 				dis.setLstDispatchCartDto(dc);
-				log.info("dis.getList().size() 1 {} ", dis.getLstDispatchCartDto().size());
+				log.info("dis {} ", dis);
 				return dis;
 			});
-			//log.info("dis.getList().size() 2 {} ", dis.getLstDispatchCartDto().size());
-			//return dis;
 		});
 		
 	}

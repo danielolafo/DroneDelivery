@@ -43,6 +43,9 @@ public class Drones {
 
     @Column(precision = 3, scale = 2)
     private BigDecimal batteryAutonomy;
+    
+    @Column(nullable=false)
+    private String status;
 
     /*
     //@OneToMany(mappedBy = "drone")
