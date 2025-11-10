@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21-jdk-alpine
-VOLUME /tmp
+#VOLUME /tmp
 WORKDIR /app
 
 #RUN mvn wrapper:wrapper
