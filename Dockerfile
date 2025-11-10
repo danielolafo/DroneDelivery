@@ -8,6 +8,6 @@ WORKDIR /app
 COPY . .
 
 RUN mvn clean package -DskipTests
-COPY --from=build target/*.jar /app/app.jar
+#COPY --from=build target/*.jar /app/app.jar
 COPY target/*.jar /app/app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
