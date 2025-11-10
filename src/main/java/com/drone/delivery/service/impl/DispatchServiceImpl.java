@@ -181,14 +181,14 @@ public class DispatchServiceImpl implements DispatchService {
 		availDroneDto.subscribe(s->log.info("FOUND DRONE {}",s));
 		
 		return this.droneService.getAvailable(dispatchDto.getStartDate()).flatMap(dro->{
-			log.info("FOUND DRONE**** {}",dro);
+			log.info("Drone info {}",dro);
 			dispatchDto.setDroneId(dro.getId());
 			return this.save(DispatchMapper.INSTANCE.toEntity(dispatchDto)).flatMap(dis->{
 				dispatchDto.getLstDispatchCartDto().forEach(dc->{
 					dc.setDispatchId(dis.getData().getId());
 					this.dispatchCartService.create(dc).map(cart->{
 						cart.setDispatchId(dispatchDto.getId());
-						log.info("Created dispatch cart for the dispatch");
+						log.info("Created dispatch cart for the dispatch {}", dis.getData().getId());
 						return cart;
 					}).subscribe();
 				});
