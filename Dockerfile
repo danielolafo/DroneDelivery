@@ -1,8 +1,12 @@
-FROM maven:3.8.5-openjdk-17 AS build
+FROM eclipse-temurin:21-jdk-alpine
 VOLUME /tmp
 WORKDIR /app
-RUN ls
-RUN echo "Next. I'm going to run mvn package"
-RUN mvn clean package -DskipTests
+
+#RUN mvn wrapper:wrapper
+#RUN chmod +x mvnw
+
+COPY pom.xml pom.xml
+
+#RUN mvn clean install
 COPY target/*.jar /app/app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
