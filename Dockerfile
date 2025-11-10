@@ -7,6 +7,6 @@ WORKDIR /app
 
 COPY pom.xml pom.xml
 
-#RUN mvn clean install
+RUN mvn clean package
 COPY target/*.jar /app/app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
