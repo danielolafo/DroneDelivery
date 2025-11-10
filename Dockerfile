@@ -5,8 +5,9 @@ WORKDIR /app
 #RUN mvn wrapper:wrapper
 #RUN chmod +x mvnw
 
-COPY pom.xml pom.xml
+COPY . .
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests
+COPY --from=build target/*.jar /app/app.jar
 COPY target/*.jar /app/app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
