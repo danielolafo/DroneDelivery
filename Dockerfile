@@ -14,7 +14,7 @@ RUN ./mvnw clean package -DskipTests
 RUN mvn clean install
 
 # Stage 2: Create the final Docker image using OpenJDK 19
-FROM openjdk:19-jdk
+FROM openjdk:19-jdk-alpine
 VOLUME /tmp
 
 COPY target/*.jar DroneDelivery-1.0.jar
