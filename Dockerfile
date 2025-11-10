@@ -1,4 +1,6 @@
 FROM eclipse-temurin:21-jdk-alpine
+
+RUN apk add --no-cache maven # For Alpine Linux
 #VOLUME /tmp
 WORKDIR /app
 
