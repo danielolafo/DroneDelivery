@@ -5,6 +5,6 @@ WORKDIR /app
 
 
 RUN mvn clean package -DskipTests
-COPY target/*.jar app.jar
-RUN chmod +x app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+COPY /target/*.jar /app/app.jar
+RUN chmod +x /app/app.jar
+ENTRYPOINT ["java","-jar","/app/app.jar"]
