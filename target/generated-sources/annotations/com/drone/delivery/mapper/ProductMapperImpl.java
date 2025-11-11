@@ -6,8 +6,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-10T15:56:22-0500",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.8 (Eclipse Adoptium)"
+    date = "2025-11-11T13:04:56-0500",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 public class ProductMapperImpl implements ProductMapper {
 
@@ -19,12 +19,12 @@ public class ProductMapperImpl implements ProductMapper {
 
         Products.ProductsBuilder products = Products.builder();
 
+        products.brand( productDto.getBrand() );
         products.id( productDto.getId() );
         products.name( productDto.getName() );
         products.quantity( productDto.getQuantity() );
-        products.unitPrice( productDto.getUnitPrice() );
         products.stockQuantity( productDto.getStockQuantity() );
-        products.brand( productDto.getBrand() );
+        products.unitPrice( productDto.getUnitPrice() );
 
         return products.build();
     }
@@ -37,12 +37,12 @@ public class ProductMapperImpl implements ProductMapper {
 
         ProductDto.ProductDtoBuilder productDto = ProductDto.builder();
 
+        productDto.brand( products.getBrand() );
         productDto.id( products.getId() );
         productDto.name( products.getName() );
         productDto.quantity( products.getQuantity() );
-        productDto.unitPrice( products.getUnitPrice() );
         productDto.stockQuantity( products.getStockQuantity() );
-        productDto.brand( products.getBrand() );
+        productDto.unitPrice( products.getUnitPrice() );
 
         return productDto.build();
     }

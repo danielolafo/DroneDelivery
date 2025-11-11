@@ -6,8 +6,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-10T15:56:22-0500",
-    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.8 (Eclipse Adoptium)"
+    date = "2025-11-11T13:04:56-0500",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 public class DroneMapperImpl implements DroneMapper {
 
@@ -19,11 +19,11 @@ public class DroneMapperImpl implements DroneMapper {
 
         Drones.DronesBuilder drones = Drones.builder();
 
+        drones.batteryAutonomy( droneDto.getBatteryAutonomy() );
+        drones.capacity( droneDto.getCapacity() );
+        drones.code( droneDto.getCode() );
         drones.id( droneDto.getId() );
         drones.name( droneDto.getName() );
-        drones.code( droneDto.getCode() );
-        drones.capacity( droneDto.getCapacity() );
-        drones.batteryAutonomy( droneDto.getBatteryAutonomy() );
 
         return drones.build();
     }
@@ -36,11 +36,11 @@ public class DroneMapperImpl implements DroneMapper {
 
         DroneDto.DroneDtoBuilder droneDto = DroneDto.builder();
 
+        droneDto.batteryAutonomy( drone.getBatteryAutonomy() );
+        droneDto.capacity( drone.getCapacity() );
+        droneDto.code( drone.getCode() );
         droneDto.id( drone.getId() );
         droneDto.name( drone.getName() );
-        droneDto.code( drone.getCode() );
-        droneDto.capacity( drone.getCapacity() );
-        droneDto.batteryAutonomy( drone.getBatteryAutonomy() );
 
         return droneDto.build();
     }
