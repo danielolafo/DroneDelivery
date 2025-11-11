@@ -18,10 +18,10 @@ public class PostgresConfig extends AbstractR2dbcConfiguration {
     public ConnectionFactory connectionFactory() {
         return new PostgresqlConnectionFactory(
                 PostgresqlConnectionConfiguration.builder()
-                .host("localhost")
+                .host("dpg-d49215ndiees73a8dfdg-a.oregon-postgres.render.com")
                 .port(5432)
-                .username("postgres")
-                .password("new_password")
+                .username("dronedeliverydb_user")
+                .password("e0obHHdfH5t9v8vzLTSHYw0rTJj3i65w")
                 .database("dronedeliv")
                 .build());
     }
