@@ -15,6 +15,6 @@ public class HealthController {
 	
 	@GetMapping
 	public Flux<String> check(){
-		return Flux.just("Emity.."+LocalDate.now().toString()).delayElements(Duration.ofSeconds(2));
+		return Flux.just("Emitted on : "+LocalDate.now().toString());
 	}
 }
