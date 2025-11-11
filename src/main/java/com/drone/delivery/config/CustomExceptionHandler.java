@@ -1,10 +1,10 @@
 package com.drone.delivery.config;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -52,6 +52,14 @@ public class CustomExceptionHandler {
 	public ResponseEntity<ResponseWrapper<Boolean>> handleException(Exception ex){
 		log.error("{} {}", Thread.currentThread().getStackTrace()[1].getMethodName(), ex.getLocalizedMessage());
 		log.error("Error +++++ "+ex.getClass().getName());
+		
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String sStackTrace = sw.toString();
+		log.error("PrintStackTrace {}", sStackTrace);
+		ex.printStackTrace();
+		log.error("DANIEL...");
 		return new ResponseEntity<>(ResponseWrapper.<Boolean>builder()
 				.message(ex.getLocalizedMessage())
 				.build(), 
