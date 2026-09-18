@@ -6,8 +6,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-11T13:04:56-0500",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
+    date = "2026-09-18T15:01:13-0500",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 public class DispatchCartMapperImpl implements DispatchCartMapper {
 
@@ -19,13 +19,13 @@ public class DispatchCartMapperImpl implements DispatchCartMapper {
 
         DispatchCart.DispatchCartBuilder dispatchCart = DispatchCart.builder();
 
-        dispatchCart.cost( dispatchCartDto.getCost() );
-        dispatchCart.dispatchId( dispatchCartDto.getDispatchId() );
         dispatchCart.id( dispatchCartDto.getId() );
-        dispatchCart.productId( dispatchCartDto.getProductId() );
+        dispatchCart.unitWeight( dispatchCartDto.getUnitWeight() );
         dispatchCart.quantity( dispatchCartDto.getQuantity() );
         dispatchCart.totalWeight( dispatchCartDto.getTotalWeight() );
-        dispatchCart.unitWeight( dispatchCartDto.getUnitWeight() );
+        dispatchCart.cost( dispatchCartDto.getCost() );
+        dispatchCart.productId( dispatchCartDto.getProductId() );
+        dispatchCart.dispatchId( dispatchCartDto.getDispatchId() );
 
         return dispatchCart.build();
     }
@@ -38,13 +38,13 @@ public class DispatchCartMapperImpl implements DispatchCartMapper {
 
         DispatchCartDto.DispatchCartDtoBuilder dispatchCartDto = DispatchCartDto.builder();
 
-        dispatchCartDto.cost( dispatchCart.getCost() );
-        dispatchCartDto.dispatchId( dispatchCart.getDispatchId() );
         dispatchCartDto.id( dispatchCart.getId() );
-        dispatchCartDto.productId( dispatchCart.getProductId() );
+        dispatchCartDto.unitWeight( dispatchCart.getUnitWeight() );
         dispatchCartDto.quantity( dispatchCart.getQuantity() );
         dispatchCartDto.totalWeight( dispatchCart.getTotalWeight() );
-        dispatchCartDto.unitWeight( dispatchCart.getUnitWeight() );
+        dispatchCartDto.cost( dispatchCart.getCost() );
+        dispatchCartDto.productId( dispatchCart.getProductId() );
+        dispatchCartDto.dispatchId( dispatchCart.getDispatchId() );
 
         return dispatchCartDto.build();
     }
