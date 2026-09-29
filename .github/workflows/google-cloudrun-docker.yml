@@ -32,13 +32,13 @@ name: 'Build and Deploy to Cloud Run'
 on:
   push:
     branches:
-      - '"master"'
+      - 'master'
 
 env:
   PROJECT_ID: 'drone-delivery-510116'
   REGION: 'us-central1' 
   SERVICE: 'drone-delivery' 
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider' # TODO: update to your workload identity provider
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/123456789/locations/global/workloadIdentityPools/ithub-wif-pool/providers/github' # TODO: update to your workload identity provider
 
 jobs:
   deploy:
