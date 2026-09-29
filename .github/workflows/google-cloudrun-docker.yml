@@ -42,7 +42,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: 'self-hosted'
+    runs-on: 'ubuntu-latest'
 
     permissions:
       contents: 'read'
@@ -51,6 +51,16 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
+
+      - name: 'Set up Java 21'
+        uses: 'actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961' # actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: 'Build JAR'
+        run: 'mvn -B clean package -DskipTests'
 
       # Configure Workload Identity Federation and generate an access token.
       #
