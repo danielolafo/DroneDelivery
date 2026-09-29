@@ -38,7 +38,7 @@ env:
   PROJECT_ID: 'drone-delivery-510116'
   REGION: 'us-central1' 
   SERVICE: 'drone-delivery' 
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/123456789/locations/global/workloadIdentityPools/ithub-wif-pool/providers/github' # TODO: update to your workload identity provider
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/6588407168/locations/global/workloadIdentityPools/ithub-wif-pool/providers/github' # TODO: update to your workload identity provider
 
 jobs:
   deploy:
