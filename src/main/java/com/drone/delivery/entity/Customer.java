@@ -4,41 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("customers")
 public class Customer {
 
 	@Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private UUID id;
+	private UUID id;
 
-    @Column(length = 50)
-    private String name;
+	private String name;
 
-    @Column(length = 100)
-    private String businessType;
+	@Column("business_type")
+	private String businessType;
 
-    //@OneToMany(mappedBy = "customer")
-    @Transient
-    private List<CustomerLocation> customerCustomerLocations = new ArrayList<>();
+	@Transient
+	private List<CustomerLocation> customerCustomerLocations = new ArrayList<>();
 
-    //@OneToMany(mappedBy = "customer")
-    @Transient
-    private List<Dispatches> customerDispatches = new ArrayList<>();
-	
+	@Transient
+	private List<Dispatches> customerDispatches = new ArrayList<>();
+
 }

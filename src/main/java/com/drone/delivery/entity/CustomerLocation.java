@@ -2,39 +2,21 @@ package com.drone.delivery.entity;
 
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("customer_locations")
 public class CustomerLocation {
-	
+
 	@Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private UUID id;
+	private UUID id;
 
-    @Column(length = 100)
-    private String address;
+	private String address;
 
-    @Column(nullable = false)
-    private Integer city;
-    
-    @Column(name="customer_id" ,nullable = false)
-    private UUID customerId;
+	private Integer city;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "customer_id", nullable = false)
-//    private Customer customer;
+	@Column("customer_id")
+	private UUID customerId;
 
 }

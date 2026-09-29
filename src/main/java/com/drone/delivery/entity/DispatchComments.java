@@ -3,39 +3,23 @@ package com.drone.delivery.entity;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("dispatch_comments")
 public class DispatchComments {
-	
+
 	@Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "primary_sequence",
-            sequenceName = "primary_sequence",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
-    )
-    private UUID id;
+	private UUID id;
 
-    @Column(nullable = false, length = 250)
-    private String dispatchComment;
+	@Column("dispatch_comment")
+	private String dispatchComment;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal dispatchRating;
+	@Column("dispatch_rating")
+	private BigDecimal dispatchRating;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dispatch_id", nullable = false)
-    private UUID dispatchId;
+	@Column("dispatch_id")
+	private UUID dispatchId;
 
 }

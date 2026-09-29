@@ -5,86 +5,51 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Entity
-@Table(name="dispatches")
+@Table("dispatches")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Dispatches {
-	
+
 	@Id
-    @Column(nullable = false, updatable = false)
-    @SequenceGenerator(
-            name = "dispatches_seq1",
-            sequenceName = "dispatches_seq1",
-            allocationSize = 1,
-            initialValue = 10000
-    )
-    @GeneratedValue(
-            strategy = GenerationType.UUID
-    )
-    private UUID id;
+	private UUID id;
 
-    @Column(length = 100)
-    private String origin;
+	private String origin;
 
-    @Column(length = 100)
-    private String target;
+	private String target;
 
-    @Column(precision = 20, scale = 2)
-    private BigDecimal paymentValue;
+	@Column("payment_value")
+	private BigDecimal paymentValue;
 
-    @Column(nullable = false)
-    private Integer paymentMethod;
+	@Column("payment_method")
+	private Integer paymentMethod;
 
-    @Column(nullable = false)
-    
-    private LocalDateTime startDate;
+	@Column("start_date")
+	private LocalDateTime startDate;
 
-    @Column
-    
-    private LocalDateTime endDate;
+	@Column("end_date")
+	private LocalDateTime endDate;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal kmDone;
-    
-    @Column(name="customer_id")
-    private UUID customerId;
-    
-    @Column(name="drone_id")
-    private UUID droneId;
-    
-    @Column(name="creation_date")
-    private LocalDate creationDate;
-    
-   
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "customer_id", nullable = false)
-//    private Customer customer;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "drone_id", nullable = false)
-//    private Drone drone;
-//
-    
-    /*
-    @Transient
-    private List<DispatchCart> dispatchDispatchCarts = new ArrayList<>();
-//
-    @Transient
-    private List<DispatchComments> dispatchDispatchComments = new ArrayList<>();
-    */
+	@Column("km_done")
+	private BigDecimal kmDone;
+
+	@Column("customer_id")
+	private UUID customerId;
+
+	@Column("drone_id")
+	private UUID droneId;
+
+	@Column("creation_date")
+	private LocalDate creationDate;
 
 }

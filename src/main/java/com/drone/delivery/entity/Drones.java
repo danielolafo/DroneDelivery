@@ -3,50 +3,36 @@ package com.drone.delivery.entity;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Table(name="Drones")
+@Table("drones")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
 public class Drones {
-	
+
 	@Id
-    @Column(nullable = false, updatable = false)
-    private UUID id;
+	private UUID id;
 
-    @Column(length = 50)
-    private String name;
+	private String name;
 
-    @Column(length = 50)
-    private String code;
+	private String code;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal capacity;
+	private BigDecimal capacity;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal batteryAutonomy;
-    
-    @Column(nullable=false)
-    private String status;
+	@Column("battery_autonomy")
+	private BigDecimal batteryAutonomy;
 
-    /*
-    //@OneToMany(mappedBy = "drone")
-    @Transient
-    private Set<DroneMaintenance> droneDroneMaintenances = new HashSet<>();
-
-    //@OneToMany(mappedBy = "drone")
-    @Transient
-    private Set<Dispatches> droneDispatches = new HashSet<>();
-    */
+	@Transient
+	private String status;
 
 }

@@ -26,7 +26,7 @@ public class DroneServiceImpl implements DroneService {
 
 	@Override
 	public Mono<DroneDto> create(DroneDto droneDto) {
-		droneDto.setId(UUID.randomUUID());
+		//droneDto.setId(UUID.randomUUID());
 		return this.droneRepository.save(DroneMapper.INSTANCE.toEntity(droneDto)).map(d->
 			DroneMapper.INSTANCE.toDto(d)
 		);

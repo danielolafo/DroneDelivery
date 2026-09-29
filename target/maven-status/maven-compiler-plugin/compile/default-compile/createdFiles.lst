@@ -38,7 +38,6 @@ com\drone\delivery\repository\DispatchRepository.class
 com\drone\delivery\repository\ProductRepository.class
 com\drone\delivery\service\DispatchService.class
 com\drone\delivery\controller\HealthController.class
-com\drone\delivery\config\PostgresConfig.class
 com\drone\delivery\entity\DispatchCart.class
 com\drone\delivery\controller\DroneController.class
 com\drone\delivery\dto\DispatchDto.class

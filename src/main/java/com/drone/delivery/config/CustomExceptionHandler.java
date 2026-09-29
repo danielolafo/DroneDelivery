@@ -18,7 +18,6 @@ import com.drone.delivery.dto.ResponseWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
-//@Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class CustomExceptionHandler {
 	
