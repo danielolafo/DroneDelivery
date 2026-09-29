@@ -31,3 +31,5 @@ replay_pid*
 .settings
 .springBeans
 .sts4-cache
+.metadata/
+target/
