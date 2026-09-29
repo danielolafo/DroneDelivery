@@ -1,7 +1,6 @@
 package com.drone.delivery.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
