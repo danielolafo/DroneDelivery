@@ -72,22 +72,29 @@ jobs:
         with:
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: 'github-actions@drone-delivery-510116.iam.gserviceaccount.com'
+          # Imprescindible: sin token_format no existe el output access_token.
+          # Ojo: auth_token es el token FEDERADO del pool (sin roles) y por eso
+          # el push falla con "Permission 'artifactregistry.repositories.
+          # uploadArtifacts' denied". access_token es el de la service account.
+          token_format: 'access_token'
+          access_token_lifetime: '300s'
 
       # BEGIN - Docker auth and build
       #
-      # NO se debe usar docker/login-action con steps.auth.outputs.auth_token
-      # cuando hay Workload Identity Federation + service_account: ese output
-      # es el token del principal federado del pool, que no tiene roles de
-      # Artifact Registry, y el push falla con
-      # "Permission 'artifactregistry.repositories.uploadArtifacts' denied".
-      # gcloud auth configure-docker usa GOOGLE_APPLICATION_CREDENTIALS (el
-      # archivo con service_account_impersonation_url) y si materializa la
-      # impersonacion en el momento del push.
-      - name: 'Authenticate Docker to Artifact Registry'
-        run: gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+      # El password DEBE ser steps.auth.outputs.access_token (el de la service
+      # account). steps.auth.outputs.auth_token es el token federado del pool,
+      # que no tiene roles de Artifact Registry.
+      - name: 'Docker Auth'
+        uses: 'docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567' # docker/login-action@v3
+        with:
+          username: 'oauth2accesstoken'
+          password: '${{ steps.auth.outputs.access_token }}'
+          registry: '${{ env.REGION }}-docker.pkg.dev'
 
       - name: 'Verify identity'
-        run: gcloud auth list --filter=status:ACTIVE --format='value(account)'
+        run: |-
+          curl -s "https://oauth2.googleapis.com/tokeninfo?access_token=${{ steps.auth.outputs.access_token }}" \
+            | grep -o '"email":"[^"]*"' || echo "no se pudo leer el tokeninfo"
 
       - name: 'Build and Push Container'
         run: |-
