@@ -71,6 +71,7 @@ jobs:
         uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
         with:
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: 'github-actions@drone-delivery-510116.iam.gserviceaccount.com'
 
       # BEGIN - Docker auth and build
       #
@@ -87,19 +88,18 @@ jobs:
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
           docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
-      - name: 'Deploy to Cloud Run'
 
-        # END - Docker auth and build
+      # END - Docker auth and build
 
+      - id: 'deploy'
+        name: 'Deploy to Cloud Run'
         uses: 'google-github-actions/deploy-cloudrun@33553064113a37d688aa6937bacbdc481580be17' # google-github-actions/deploy-cloudrun@v2
         with:
           service: '${{ env.SERVICE }}'
           region: '${{ env.REGION }}'
           # NOTE: If using a pre-built image, update the image name below:
-
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}'
+
       # If required, use the Cloud Run URL output in later steps
       - name: 'Show output'
-        run: |2-
-
-          echo ${{ steps.deploy.outputs.url }}
+        run: echo '${{ steps.deploy.outputs.url }}'
