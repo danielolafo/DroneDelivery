@@ -38,6 +38,12 @@ env:
   PROJECT_ID: 'drone-delivery-510116'
   REGION: 'us-central1' 
   SERVICE: 'drone-delivery' 
+  # Artifact Registry exige el path completo de 4 componentes:
+  # HOST/PROJECT_ID/REPOSITORY/IMAGE:TAG
+  # Sin el nombre de imagen, "docker push" reintenta cada capa y termina con el
+  # error enganoso "name invalid: Missing image name. Pushes should be of the form
+  # docker push HOST-NAME/PROJECT-ID/REPOSITORY/IMAGE".
+  IMAGE: 'app'
   WORKLOAD_IDENTITY_PROVIDER: 'projects/6588407168/locations/global/workloadIdentityPools/github-wif-pool/providers/github'
 
 jobs:
@@ -98,7 +104,7 @@ jobs:
 
       - name: 'Build and Push Container'
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}:${{ github.sha }}"
           echo "DOCKER_TAG=${DOCKER_TAG}"
           docker build --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
@@ -112,7 +118,7 @@ jobs:
           service: '${{ env.SERVICE }}'
           region: '${{ env.REGION }}'
           # NOTE: If using a pre-built image, update the image name below:
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.IMAGE }}:${{ github.sha }}'
 
       # If required, use the Cloud Run URL output in later steps
       - name: 'Show output'
